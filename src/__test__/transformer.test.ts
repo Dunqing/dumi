@@ -9,7 +9,7 @@ const readFile = (file: string) => {
 
 describe('transformer', () => {
   it('frontmatter work', () => {
-    const markdown = readFile('./md/yaml.md')
+    const markdown = readFile('./md/code.md')
     transform(markdown)
   })
 })
