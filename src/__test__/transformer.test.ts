@@ -3,9 +3,13 @@ import path from 'path'
 import { describe, it } from 'vitest'
 import { transform } from '../transformer'
 
+const readFile = (file: string) => {
+  return readFileSync(path.resolve(__dirname, file)).toString()
+}
+
 describe('transformer', () => {
-  it('work', () => {
-    const markdown = readFileSync(path.resolve(__dirname, './md/yaml.md')).toString()
+  it('frontmatter work', () => {
+    const markdown = readFile('./md/yaml.md')
     transform(markdown)
   })
 })

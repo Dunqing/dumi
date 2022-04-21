@@ -1,1 +1,1 @@
-export * from './remark-yaml-parse'
+export * from './remark-yaml-data'
