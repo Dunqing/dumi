@@ -1,16 +1,16 @@
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
-import rehypeParse from 'rehype-parse'
-import remarkRehype from 'remark-rehype'
+import remarkStringify from 'remark-stringify'
 import remarkFrontmatter from 'remark-frontmatter'
+import { remarkYamlParse } from './plugins'
 
 const processor = unified()
-  .use(remarkParse)
   .use(remarkFrontmatter, { type: 'yaml', marker: '-' })
-  .use(remarkRehype)
+  .use(remarkYamlParse)
+  .use(remarkParse)
+  .use(remarkStringify)
 
 export const transform = async(code: string) => {
-  const ast = processor.parse(code)
-  console.log(ast)
+  const ast = processor.processSync(code)
   return ''
 }

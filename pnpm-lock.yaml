@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@antfu/eslint-config': ^0.20.6
       '@rollup/pluginutils': ^4.2.1
+      '@types/mdast': 3.0.10
       '@types/node': ^17.0.24
       bumpp: ^7.1.1
       eslint: ^8.13.0
@@ -15,12 +16,16 @@ importers:
       remark-frontmatter: ^4.0.1
       remark-parse: ^10.0.1
       remark-rehype: ^10.1.0
+      remark-stringify: ^10.0.2
       remark-yaml-config: ^6.0.1
       tsup: ^5.12.5
       typescript: ^4.6.3
       unified: ^10.1.2
+      unist-util-is: ^5.1.1
+      unist-util-visit: ^4.1.0
       vite: ^2.9.5
       vitest: ^0.9.3
+      yaml: ^2.0.1
     dependencies:
       '@rollup/pluginutils': 4.2.1
       fast-glob: 3.2.11
@@ -28,11 +33,16 @@ importers:
       remark-frontmatter: 4.0.1
       remark-parse: 10.0.1
       remark-rehype: 10.1.0
+      remark-stringify: 10.0.2
       remark-yaml-config: 6.0.1
       unified: 10.1.2
+      unist-util-is: 5.1.1
+      unist-util-visit: 4.1.0
       vite: 2.9.5
+      yaml: 2.0.1
     devDependencies:
       '@antfu/eslint-config': 0.20.6_eslint@8.13.0+typescript@4.6.3
+      '@types/mdast': 3.0.10
       '@types/node': 17.0.24
       bumpp: 7.1.1
       eslint: 8.13.0
@@ -3798,6 +3808,14 @@ packages:
       unified: 10.1.2
     dev: false
 
+  /remark-stringify/10.0.2:
+    resolution: {integrity: sha512-6wV3pvbPvHkbNnWB0wdDvVFHOe1hBRAx1Q/5g/EpH4RppAII6J8Gnwe7VbHuXaoKIF6LAg6ExTel/+kNqSQ7lw==}
+    dependencies:
+      '@types/mdast': 3.0.10
+      mdast-util-to-markdown: 1.3.0
+      unified: 10.1.2
+    dev: false
+
   /remark-yaml-config/6.0.1:
     resolution: {integrity: sha512-5VLWbNsQ2y/XA5EpgCUfSOgauCkFjA2ISaqd8gPi0OYxlZtYkVWU4VJ/oWXj1DyS2o7UQ4MDK3vu44HkFAkYfA==}
     dependencies:
@@ -4481,6 +4499,11 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
     dev: true
+
+  /yaml/2.0.1:
+    resolution: {integrity: sha512-1NpAYQ3wjzIlMs0mgdBmYzLkFgWBIWrzYVDYfrixhoFNNgJ444/jT2kUT2sicRbJES3oQYRZugjB6Ro8SjKeFg==}
+    engines: {node: '>= 14'}
+    dev: false
 
   /zwitch/2.0.2:
     resolution: {integrity: sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA==}
