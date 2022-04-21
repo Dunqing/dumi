@@ -7,7 +7,7 @@ interface PluginOptions {
   exclude?: FilterPattern
 }
 
-export default function importDynamicModule({ include = [], exclude = [] }: PluginOptions = {}): Plugin {
+export default function plugin({ include = [], exclude = [] }: PluginOptions = {}): Plugin {
   const filter = createFilter(include, exclude)
   return {
     name: 'vite-plugin-dumi',
