@@ -5,7 +5,7 @@ import remarkParse from 'remark-parse/lib'
 import remarkStringify from 'remark-stringify'
 import { unified } from 'unified'
 import { describe, expect, it } from 'vitest'
-import { remarkYamlData } from '../transformer/plugins'
+import { meta } from '../transformer/plugins'
 
 const readFile = (file: string) => {
   return readFileSync(path.resolve(__dirname, file)).toString()
@@ -14,9 +14,9 @@ const readFile = (file: string) => {
 describe('plugins', () => {
   const processor = unified().use(remarkParse).use(remarkStringify)
 
-  it('remark-yaml-data', () => {
+  it('meta', () => {
     const markdown = readFile('./md/yaml.md')
-    const file = processor.use([remarkFrontmatter, remarkYamlData]).processSync(markdown)
+    const file = processor.use([remarkFrontmatter, meta]).processSync(markdown)
     expect(file.data).toMatchInlineSnapshot(`
       {
         "metadata": {

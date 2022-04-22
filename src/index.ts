@@ -1,5 +1,4 @@
 import path from 'path'
-import { readFileSync } from 'fs'
 import type { Plugin, ResolvedConfig } from 'vite'
 import { normalizePath } from 'vite'
 import type { FilterPattern } from '@rollup/pluginutils'
@@ -12,7 +11,7 @@ interface PluginOptions {
   exclude?: FilterPattern
 }
 
-const MARKDOWN_ENTRY = 'MARKDOWN_ENTRY'
+const MARKDOWN_ENTRY = 'MARKDOWN_ENTRY.tsx'
 
 export default function plugin({ include = [], exclude = [] }: PluginOptions = {}): Plugin {
   const filter = createFilter(include, exclude)
@@ -35,19 +34,32 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
           cwd: config.root,
           ignore: ['**/node_modules/**'],
         })
+
         return `
-          ${sources.map(source => `import '${
+        import React, {Suspense} from 'react';
+        import ReactDOM from 'react-dom';
+        import { HashRouter, Routes, Route } from 'react-router-dom';
+          ${sources.map(source => `import { default as Component1 } from '${
             normalizePath(path.posix.join(config.root, source))
           }'`).join('\n')}
+          console.log(Component1)
+          ReactDOM.render(
+            <Suspense fallback={<div>loading~~~</div>}>
+            <HashRouter>
+            <Routes>
+            <Route path="*" element={
+                  <Component1 />
+                }>
+                </Route>
+              </Routes>
+            </HashRouter>,
+            </Suspense>,
+            document.getElementById('docs')
+          )
         `
       }
-
-      if (id.endsWith('.md')) {
-        transform(
-          readFileSync(id).toString(),
-        )
-        return ''
-      }
+      if (id.endsWith('.md'))
+        return transform(id.replace('.md.tsx', '.md'))
     },
     transformIndexHtml(html) {
       return {
@@ -59,6 +71,13 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
             attrs: {
               type: 'module',
               src: MARKDOWN_ENTRY,
+            },
+          },
+          {
+            tag: 'div',
+            injectTo: 'body',
+            attrs: {
+              id: 'docs',
             },
           },
         ],

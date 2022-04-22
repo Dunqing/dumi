@@ -4,5 +4,7 @@ import plugin from 'vite-plugin-dumi'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [plugin(), react()],
+  plugins: [plugin(), react({
+    include: [/\.md$/],
+  })],
 })

@@ -43,7 +43,10 @@
   },
   "dependencies": {
     "@rollup/pluginutils": "^4.2.1",
+    "esbuild": "^0.14.38",
     "fast-glob": "^3.2.11",
+    "hast-util-to-estree": "^2.0.2",
+    "recast": "^0.20.5",
     "rehype-parse": "^8.0.4",
     "rehype-raw": "^6.1.1",
     "rehype-stringify": "^9.0.3",
@@ -55,6 +58,7 @@
     "unified": "^10.1.2",
     "unist-util-is": "^5.1.1",
     "unist-util-visit": "^4.1.0",
+    "vfile": "^5.3.2",
     "vite": "^2.9.5",
     "yaml": "^2.0.1"
   },

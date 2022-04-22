@@ -1,4 +1,4 @@
-<!-- ```tsx | pure
+```tsx | pure
 renderFormItem: (_, { type, defaultRender, formItemProps, fieldProps, ...rest }, form) => {
   if (type === 'form')
     return null
@@ -32,6 +32,6 @@ renderFormItem: (_, { type, defaultRender, formItemProps, fieldProps, ...rest },
     },
     form: FormInstance,
   ) => JSX.Element | false | null;
-``` -->
+```
 
-<code src="./demos/linkage_form.tsx" background="#f5f5f5" height="310px" title="搜索表单自定义" />
+<code src="../examples/code.tsx" background="#f5f5f5" height="310px" title="搜索表单自定义" />

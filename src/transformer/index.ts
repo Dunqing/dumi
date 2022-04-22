@@ -1,31 +1,77 @@
+import { readFileSync } from 'fs'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
-import remarkStringify from 'remark-stringify'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkRehype from 'remark-rehype'
-import rehypeParse from 'rehype-parse/lib'
-import rehypeStringify from 'rehype-stringify'
 import rehypeRaw from 'rehype-raw'
-import { visit } from 'unist-util-visit'
-import { remarkYamlData } from './plugins'
+import type { VFile } from 'vfile'
+import esbuild from 'esbuild'
+import type { Strong } from 'mdast'
+import { codeblock, jsx, jsxStringify, meta, previewer } from './plugins'
 
 const processor = unified()
-  .use(remarkFrontmatter, { type: 'yaml', marker: '-' })
-  .use(remarkYamlData)
+  .use(remarkFrontmatter)
+  .use(meta)
   .use(remarkParse)
   .use(remarkRehype, { allowDangerousHtml: true })
-  .use(rehypeRaw)
-  .use(rehypeStringify)
-
-export const transform = async(code: string) => {
-  let ast: any = processor.parse(code)
-  // TODO: parse code
-  ast = processor.runSync(ast)
-  visit(ast, {
-    type: 'element',
-    tagName: 'code',
-  }, (node) => {
-    console.log('🚀 ~ file: index.ts ~ line 27 ~ transform ~ node', node)
+  .use(codeblock)
+  .use(rehypeRaw, {
+    passThrough: ['demo'],
   })
-  return ''
+  .use(previewer)
+  .use(jsx)
+  .use(jsxStringify)
+
+const generateRuntimeComponent = (components?: Record<string, string>) => {
+  return `
+    function __runtimeComponent__(src) {
+      switch (src) {
+        ${
+          Object.keys(components || {}).map((key) => {
+            return `case ${JSON.stringify(key)}: return lazy(() => import(${JSON.stringify(components![key])}));`
+          }).join('\n')
+        }
+        default:
+          return null;
+      }
+    }
+  `
+}
+
+export const wrapperMarkdown = (source: VFile) => {
+  return `
+    import React, { lazy } from 'react';
+
+    const Previewer = ({children}) => {
+      return <>{children}</>
+    }
+
+    ${generateRuntimeComponent(source.data.components as Record<string, any>)}
+    
+
+    const CodeComponent = ({ src }) => {
+      const Component = __runtimeComponent__(src)
+      if (!Component) {
+        return null
+      }
+      return <Component />
+    }
+
+    export default function markdown() {
+      return ${source}
+    }
+  `
+}
+
+export const transform = async(id: string) => {
+  const md = processor.processSync({
+    value: readFileSync(id).toString(),
+    path: id,
+  })
+
+  const code = wrapperMarkdown(md)
+
+  return esbuild.transformSync(code, {
+    loader: 'jsx',
+  })
 }
