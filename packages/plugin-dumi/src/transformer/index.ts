@@ -6,7 +6,6 @@ import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import type { VFile } from 'vfile'
 import esbuild from 'esbuild'
-import type { Strong } from 'mdast'
 import { codeblock, jsx, jsxStringify, meta, previewer } from './plugins'
 
 const processor = unified()

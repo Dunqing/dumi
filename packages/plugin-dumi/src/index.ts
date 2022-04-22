@@ -42,7 +42,6 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
           ${sources.map(source => `import { default as Component1 } from '${
             normalizePath(path.posix.join(config.root, source))
           }'`).join('\n')}
-          console.log(Component1)
           ReactDOM.render(
             <Suspense fallback={<div>loading~~~</div>}>
             <HashRouter>
