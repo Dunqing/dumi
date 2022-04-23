@@ -5,7 +5,7 @@ import remarkParse from 'remark-parse/lib'
 import remarkStringify from 'remark-stringify'
 import { unified } from 'unified'
 import { describe, expect, it } from 'vitest'
-import { meta } from '../transformer/plugins'
+import { meta } from '../transformer/markdown/plugins'
 
 const readFile = (file: string) => {
   return readFileSync(path.resolve(__dirname, file)).toString()

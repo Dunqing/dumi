@@ -29,6 +29,8 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "dev": "pnpm run --filter ./packages --parallel dev",
+    "build": "pnpm run --filter ./packages build",
     "play": "pnpm run --filter ./playground dev",
     "prepublishOnly": "pnpm run build",
     "test": "vitest",

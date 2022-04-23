@@ -1,25 +1,7 @@
 import { readFileSync } from 'fs'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkRehype from 'remark-rehype'
-import rehypeRaw from 'rehype-raw'
-import type { VFile } from 'vfile'
-import esbuild from 'esbuild'
-import { codeblock, jsx, jsxStringify, meta, previewer } from './plugins'
-
-const processor = unified()
-  .use(remarkFrontmatter)
-  .use(meta)
-  .use(remarkParse)
-  .use(remarkRehype, { allowDangerousHtml: true })
-  .use(codeblock)
-  .use(rehypeRaw, {
-    passThrough: ['demo'],
-  })
-  .use(previewer)
-  .use(jsx)
-  .use(jsxStringify)
+import { transformSync } from 'esbuild'
+import { VFile } from 'vfile'
+import { transformMarkdown } from './markdown'
 
 const generateRuntimeComponent = (components?: Record<string, string>) => {
   return `
@@ -59,15 +41,15 @@ export const wrapperMarkdown = (source: VFile) => {
   `
 }
 
-export const transform = async(id: string) => {
-  const md = processor.processSync({
-    value: readFileSync(id).toString(),
+export const transform = (id: string) => {
+  const file = new VFile({
     path: id,
+    value: readFileSync(id).toString(),
   })
+  const mFile = transformMarkdown(file)
 
-  const code = wrapperMarkdown(md)
-
-  return esbuild.transformSync(code, {
+  const source = wrapperMarkdown(mFile)
+  return transformSync(source, {
     loader: 'jsx',
   })
 }
