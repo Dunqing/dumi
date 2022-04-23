@@ -20,7 +20,7 @@
     ".": {
       "import": "./dist/index.ts.mjs",
       "require": "./dist/index.ts.cjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.ts.d.ts"
     }
   },
   "files": [
@@ -58,7 +58,8 @@
     "unist-util-visit": "^4.1.0",
     "vfile": "^5.3.2",
     "vite": "^2.9.5",
-    "yaml": "^2.0.1"
+    "yaml": "^2.0.1",
+    "@dumi/theme-default": "workspace:*"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.20.6",

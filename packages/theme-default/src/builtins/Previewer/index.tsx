@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Tabs, { TabPane } from 'rc-tabs'
-import type { IPreviewerComponentProps } from 'dumi/theme'
+import type { IPreviewerComponentProps } from '@dumi/theme'
 import {
   AnchorLink,
   Link,
@@ -9,11 +9,10 @@ import {
   useCopy,
   useDemoUrl,
   useLocaleProps,
-  useMotions,
   usePrefersColor,
-  useRiddle,
   useTSPlaygroundUrl,
-} from 'dumi/theme'
+} from '@dumi/theme'
+import { useLocation } from 'react-router-dom'
 import type { ICodeBlockProps } from '../SourceCode'
 import SourceCode from '../SourceCode'
 import './index.less'
@@ -74,11 +73,10 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
   const props = useLocaleProps<IPreviewerProps>(locale, oProps)
   const builtinDemoUrl = useDemoUrl(props.identifier)
   const demoUrl = props.demoUrl || builtinDemoUrl
-  const isActive = history?.location.hash === `#${props.identifier}`
+  const location = useLocation()
+  const isActive = location.hash === `#${props.identifier}`
   const isSingleFile = Object.keys(props.sources).length === 1
   const openCSB = useCodeSandbox(props.hideActions?.includes('CSB') ? null : props)
-  const openRiddle = useRiddle(props.hideActions?.includes('RIDDLE') ? null : props)
-  const [execMotions, isMotionRunning] = useMotions(props.motions || [], demoRef.current)
   const [copyCode, copyStatus] = useCopy()
   const [currentFile, setCurrentFile] = useState(() =>
     props.sources._ ? '_' : Object.keys(props.sources)[0],
@@ -148,7 +146,6 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
         {props.title && <AnchorLink to={`#${props.identifier}`}>{props.title}</AnchorLink>}
         {props.description && (
           <div
-            // eslint-disable-next-line
             dangerouslySetInnerHTML={{ __html: props.description }}
           />
         )}
@@ -162,23 +159,6 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
                 className="__dumi-default-icon"
                 role="codesandbox"
                 onClick={openCSB}
-              />
-            )}
-            {openRiddle && (
-              <button
-                title="Open demo on Riddle"
-                className="__dumi-default-icon"
-                role="riddle"
-                onClick={openRiddle}
-              />
-            )}
-            {props.motions && (
-              <button
-                title="Execute motions"
-                className="__dumi-default-icon"
-                role="motions"
-                disabled={isMotionRunning}
-                onClick={() => execMotions()}
               />
             )}
             {props.iframe && (

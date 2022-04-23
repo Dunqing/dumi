@@ -40,10 +40,7 @@ const generateRuntimeComponent = (components?: Record<string, string>) => {
 export const wrapperMarkdown = (source: VFile) => {
   return `
     import React, { lazy } from 'react';
-
-    const Previewer = ({children}) => {
-      return <>{children}</>
-    }
+    import { Previewer } from '@dumi/theme-default'
 
     ${generateRuntimeComponent(source.data.components as Record<string, any>)}
     

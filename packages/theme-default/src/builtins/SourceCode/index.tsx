@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Language } from 'prism-react-renderer'
 import Highlight, { defaultProps } from 'prism-react-renderer'
-import { useCopy } from 'dumi/theme'
+import { useCopy } from '@dumi/theme'
 import 'prismjs/themes/prism.css'
 import './index.less'
 
