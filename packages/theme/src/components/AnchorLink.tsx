@@ -118,7 +118,7 @@ const AnchorLink: React.FC<NavLinkProps> & { scrollToAnchor: (anchor: string) =>
       {...props}
       ref={ref}
       onClick={() => AnchorLink.scrollToAnchor(hash.substring(1))}
-      isActive={() => isActive}
+      // isActive={() => isActive}
     />
   )
 }

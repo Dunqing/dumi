@@ -36,6 +36,7 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
         })
 
         return `
+        import '@dumi/theme-default/style'
         import React, {Suspense} from 'react';
         import ReactDOM from 'react-dom';
         import { HashRouter, Routes, Route } from 'react-router-dom';

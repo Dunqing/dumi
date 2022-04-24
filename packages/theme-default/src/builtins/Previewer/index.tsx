@@ -84,7 +84,7 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
   const [sourceType, setSourceType] = useState(
     getSourceType(currentFile, props.sources[currentFile]),
   )
-  const [showSource, setShowSource] = useState(Boolean(props.defaultShowCode))
+  const [showSource, setShowSource] = useState(Boolean(!props.defaultShowCode))
   const [iframeKey, setIframeKey] = useState(Math.random())
   const currentFileCode
     = props.sources[currentFile][sourceType] || props.sources[currentFile].content
@@ -99,6 +99,7 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
   }, [color])
 
   function handleFileChange(filename: string) {
+    console.log('🚀 ~ file: index.tsx ~ line 102 ~ handleFileChange ~ filename', filename)
     setCurrentFile(filename)
     setSourceType(getSourceType(filename, props.sources[filename]))
   }

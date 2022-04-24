@@ -26,7 +26,7 @@ function getTextContent(raw: string) {
  * @param opts  previewer props
  */
 function getCSBData(opts: any) {
-  const isTSX = Boolean(opts.sources._.tsx)
+  const isTSX = Boolean(Object.values(opts.sources).some(s => s.lang === 'tsx'))
   const ext = isTSX ? '.tsx' : '.jsx'
   const files: Record<string, { content: string }> = {}
   const deps: Record<string, string> = {}
