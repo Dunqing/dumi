@@ -57,8 +57,13 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
           )
         `
       }
-      if (id.endsWith('.md'))
-        return transform(id.replace('.md.tsx', '.md'))
+      if (id.endsWith('.md')) {
+        return transform(id, (id: string, importer) => {
+          return this.resolve(id, importer, {
+            skipSelf: true,
+          })
+        })
+      }
     },
     transformIndexHtml(html) {
       return {

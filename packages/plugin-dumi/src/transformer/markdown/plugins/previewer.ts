@@ -2,7 +2,6 @@ import path from 'path'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 import type { Element, Parent } from 'hast'
-import { getSources } from './sources'
 
 export const previewer: Plugin = function() {
   return (root, file) => {
@@ -20,13 +19,10 @@ export const previewer: Plugin = function() {
         [src]: codePath,
       })
 
-      // getSources(file)
-
       parent.children.splice(index, 1, {
         type: 'element',
         tagName: 'Previewer',
         properties: {
-          type: 'preview',
           ...node.properties,
         },
         position: node.position,

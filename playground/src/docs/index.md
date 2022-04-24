@@ -26,4 +26,4 @@ ProTable 的诞生是为了解决项目中需要写很多 table 的样板代码�
 
 ### 查询表格
 
-<code src="../examples/example1.tsx" background="#f5f5f5" sheight="500px" title="查询表格" />
+<code src="../examples/example1.tsx" background="#f5f5f5" height="500px" title="查询表格" />

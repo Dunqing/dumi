@@ -4,7 +4,9 @@ import remarkFrontmatter from 'remark-frontmatter'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import type { VFile } from 'vfile'
-import { codeblock, jsx, jsxStringify, meta, previewer } from './plugins'
+import type { ResolveFunction } from '../types'
+import { codeblock, jsx, meta, previewer } from './plugins'
+import { generatePage } from './page'
 
 const processor = unified()
   .use(remarkFrontmatter)
@@ -17,8 +19,8 @@ const processor = unified()
   })
   .use(previewer)
   .use(jsx)
-  .use(jsxStringify)
 
-export const transformMarkdown = (file: VFile) => {
-  return processor.processSync(file)
+export const transformMarkdown = (file: VFile, resolve: ResolveFunction) => {
+  const mFile = processor.processSync(file)
+  return generatePage(mFile, resolve)
 }
