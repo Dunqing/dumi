@@ -24,6 +24,7 @@ const generateApp = (markdowns: string[]) => {
     children += `<MarkdownComponents${i} />\n`
 
   return `
+    import "@dumi/theme-default/style"
     import React, {Suspense} from 'react';
     import { BrowserRouter, Routes, Route } from 'react-router-dom';
     ${imports}
@@ -32,12 +33,18 @@ const generateApp = (markdowns: string[]) => {
         <Suspense fallback={<div>loading~~~</div>}>
           <BrowserRouter>
             <Routes>
-              ${children}
+              <Route path="/" element={
+                <>
+                  ${children}
+                </>
+              }>
+              </Route>
             </Routes>
           </BrowserRouter>
         </Suspense>
       )
-    }`
+    }
+  `
 }
 
 export const generateMarkdownEntry = (config: ResolvedConfig) => {

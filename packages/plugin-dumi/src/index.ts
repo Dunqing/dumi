@@ -31,7 +31,7 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
         return generateMarkdownEntry(config)
 
       if (id.endsWith('.md')) {
-        return transform(id, (id: string, importer) => {
+        return transform(id, (id: string, importer?: string) => {
           return this.resolve(id, importer, {
             skipSelf: true,
           })
