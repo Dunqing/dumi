@@ -19,6 +19,7 @@ const generateApp = (markdowns: string[]) => {
   const imports = markdowns.map((m) => {
     return `import MarkdownComponents${index} from ${JSON.stringify(m)}`
   }).join('\n')
+
   let children = ''
   for (let i = 0; i <= index; i++)
     children += `<MarkdownComponents${i} />\n`

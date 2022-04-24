@@ -40,6 +40,7 @@ const generateRuntimeComponent = (components?: Record<string, string>) => {
 }
 
 export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
+  console.log('🚀 ~ file: page.ts ~ line 43 ~ renderPage ~ source', source)
   return `
     import React, { lazy, useCallback } from 'react';
     import { Previewer as ThemePreviewer, Layout } from '@dumi/theme-default'

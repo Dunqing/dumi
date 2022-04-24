@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Link, context } from '@dumi/theme'
 import Navbar from './components/Navbar'
 import SideMenu from './components/SideMenu'
@@ -6,7 +7,6 @@ import SlugList from './components/SlugList'
 import SearchBar from './components/SearchBar'
 import Dark from './components/Dark'
 import './styles/layout.less'
-import { useLocation } from 'react-router-dom'
 
 const Hero = hero => (
   <>
