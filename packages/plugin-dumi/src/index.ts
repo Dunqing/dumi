@@ -1,10 +1,8 @@
-import path from 'path'
 import type { Plugin, ResolvedConfig } from 'vite'
-import { normalizePath } from 'vite'
 import type { FilterPattern } from '@rollup/pluginutils'
 import { createFilter } from '@rollup/pluginutils'
-import glob from 'fast-glob'
 import { transform } from './transformer'
+import { generateMarkdownEntry } from './router'
 
 interface PluginOptions {
   include?: FilterPattern
@@ -29,35 +27,9 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
       }
     },
     load(id) {
-      if (id.includes(MARKDOWN_ENTRY)) {
-        const sources = glob.sync('**/*.md', {
-          cwd: config.root,
-          ignore: ['**/node_modules/**'],
-        })
+      if (id.includes(MARKDOWN_ENTRY))
+        return generateMarkdownEntry(config)
 
-        return `
-        import '@dumi/theme-default/style'
-        import React, {Suspense} from 'react';
-        import ReactDOM from 'react-dom';
-        import { HashRouter, Routes, Route } from 'react-router-dom';
-          ${sources.map(source => `import { default as Component1 } from '${
-            normalizePath(path.posix.join(config.root, source))
-          }'`).join('\n')}
-          ReactDOM.render(
-            <Suspense fallback={<div>loading~~~</div>}>
-            <HashRouter>
-            <Routes>
-            <Route path="*" element={
-                  <Component1 />
-                }>
-                </Route>
-              </Routes>
-            </HashRouter>,
-            </Suspense>,
-            document.getElementById('docs')
-          )
-        `
-      }
       if (id.endsWith('.md')) {
         return transform(id, (id: string, importer) => {
           return this.resolve(id, importer, {

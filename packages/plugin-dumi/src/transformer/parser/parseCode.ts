@@ -5,7 +5,7 @@ import { parseSync } from '@babel/core'
 
 const extRE = /\.(tsx?|jsx?)$/
 
-export const parseFile = (filePath: string) => {
+export const parseFile = (filePath: string): any => {
   const source = readFileSync(filePath).toString()
   const ext = extRE.exec(filePath)?.[1]
   const transformResult = transformSync(source, {

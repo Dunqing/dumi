@@ -42,7 +42,7 @@ const generateRuntimeComponent = (components?: Record<string, string>) => {
 export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
   return `
     import React, { lazy, useCallback } from 'react';
-    import { Previewer as ThemePreviewer } from '@dumi/theme-default'
+    import { Previewer as ThemePreviewer, Layout } from '@dumi/theme-default'
 
     ${await generateSources(source.data.components as Record<string, any>, resolve)}
     ${generateRuntimeComponent(source.data.components as Record<string, any>)}
@@ -60,7 +60,7 @@ export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
     }
 
     export default function markdown() {
-      return ${source}
+      return <Layout>${source}</Layout>
     }
   `
 }
