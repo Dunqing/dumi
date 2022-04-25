@@ -3,16 +3,15 @@ interface PathTrie {
   children: PathTrie[]
 }
 
-export const buildingPathTrie = (keys: string[], prefix: string = '/') =>{
+export const buildingPathTrie = (keys: string[], prefix = '/') => {
   const pathTrie: PathTrie[] = []
   const nextPrefix = new Set<string>()
-  
-  keys.forEach(key => {
+
+  keys.forEach((key) => {
     if (key.startsWith(prefix)) {
       const p = key.replace(prefix, '').split('/')[0]
-      if (p) {
+      if (p)
         nextPrefix.add(p)
-      }
     }
   })
 
@@ -20,7 +19,7 @@ export const buildingPathTrie = (keys: string[], prefix: string = '/') =>{
     const np = `${prefix}${p}/`
     pathTrie.push({
       path: p,
-      children: buildingPathTrie(keys.filter((k) => k.startsWith(np)), np)
+      children: buildingPathTrie(keys.filter(k => k.startsWith(np)), np),
     })
   })
   return pathTrie

@@ -1,9 +1,9 @@
+import path from 'path'
 import type { Plugin, ResolvedConfig } from 'vite'
 import type { FilterPattern } from '@rollup/pluginutils'
 import { createFilter } from '@rollup/pluginutils'
-import { transform } from './transformer'
-import { generateRoutes} from './routes'
-import path from 'path'
+import { generateRoutes } from './node/routes'
+import { transform } from './node'
 
 interface PluginOptions {
   include?: FilterPattern
@@ -32,17 +32,15 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
     },
     load(id) {
       if (id.includes(MARKDOWN_ENTRY)) {
-
         const routes = generateRoutes(config, this.resolve.bind(this))
 
         return {
           code: `
             import ${JSON.stringify(entryPath)}
           `,
-          moduleSideEffects: false
+          moduleSideEffects: false,
         }
-       }
-
+      }
 
       if (id.endsWith('.md')) {
         return transform(id, (id: string, importer?: string) => {
