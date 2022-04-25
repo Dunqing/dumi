@@ -40,8 +40,6 @@ export const slug: Plugin = function() {
         if (!file.data.title)
           file.data.title = title
 
-        console.log(element)
-
         file.data.slugs = ((file.data.slugs as any[]) || []).concat({
           depth: parseInt(element.tagName[1], 10),
           value: title,

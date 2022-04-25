@@ -99,7 +99,6 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
   }, [color])
 
   function handleFileChange(filename: string) {
-    console.log('🚀 ~ file: index.tsx ~ line 102 ~ handleFileChange ~ filename', filename)
     setCurrentFile(filename)
     setSourceType(getSourceType(filename, props.sources[filename]))
   }

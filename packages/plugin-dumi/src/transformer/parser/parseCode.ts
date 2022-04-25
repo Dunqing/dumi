@@ -8,8 +8,13 @@ const extRE = /\.(tsx?|jsx?)$/
 export const parseFile = (filePath: string): any => {
   const source = readFileSync(filePath).toString()
   const ext = extRE.exec(filePath)?.[1]
-  const transformResult = transformSync(source, {
-    loader: (ext as Loader) || 'tsx',
-  })
-  return parseSync(transformResult.code)
+  try {
+    const transformResult = transformSync(source, {
+      loader: (ext as Loader) || 'tsx',
+    })
+    return parseSync(transformResult.code)
+
+  } catch (err) {
+  console.log("🚀 ~ file: parseCode.ts ~ line 18 ~ parseFile ~ err", filePath, source)
+  }
 }

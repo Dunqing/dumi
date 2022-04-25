@@ -34,10 +34,15 @@ interface Sources {
   content: string
 }
 
+const allowExt = /(.m?tsx?|.m?jsx?)$/
+
 export const analyzeDeps = async(filePath: string, resolve: ResolveFunction) => {
   const dependencies = new Set<string>()
 
   const traverseFiles = async(file: string) => {
+
+    if (!allowExt.test(file)) return
+
     let filesMap: Record<string, string> = {}
     const sources = collectSources(file)
 

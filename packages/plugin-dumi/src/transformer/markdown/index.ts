@@ -5,7 +5,7 @@ import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import type { VFile } from 'vfile'
 import type { ResolveFunction } from '../types'
-import { codeblock, jsx, meta, previewer, slug } from './plugins'
+import { codeblock, embed, jsx, meta, previewer, slug } from './plugins'
 import { generatePage } from './page'
 
 const processor = unified()
@@ -18,11 +18,11 @@ const processor = unified()
   .use(rehypeRaw, {
     passThrough: ['demo'],
   })
+  .use(embed)
   .use(previewer)
   .use(jsx)
 
 export const transformMarkdown = (file: VFile, resolve: ResolveFunction) => {
   const mFile = processor.processSync(file)
-  console.log('🚀 ~ file: index.ts ~ line 27 ~ transformMarkdown ~ mFile', mFile)
   return generatePage(mFile, resolve)
 }
