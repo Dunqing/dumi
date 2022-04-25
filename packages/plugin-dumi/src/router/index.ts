@@ -28,21 +28,23 @@ const generateApp = (markdowns: string[]) => {
     import "@dumi/theme-default/style"
     import React, {Suspense} from 'react';
     import { BrowserRouter, Routes, Route } from 'react-router-dom';
+    
     ${imports}
+
     const App = () => {
       return (
+        <BrowserRouter>
         <Suspense fallback={<div>loading~~~</div>}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={
-                <>
-                  ${children}
-                </>
-              }>
-              </Route>
-            </Routes>
+          <Routes>
+        
+          <Route path="/" element={
+            ${children}
+            
+          }>
+          </Route>
+          </Routes>
+          </Suspense>
           </BrowserRouter>
-        </Suspense>
       )
     }
   `

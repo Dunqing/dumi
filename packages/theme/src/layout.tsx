@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Context from './context'
 import type { IThemeContext } from './context'
 
@@ -138,7 +139,9 @@ const findDumiRoot = (routes: any): IThemeContext['routes'] => {
  * outer theme layout
  */
 const OuterLayout: React.FC<IOuterLayoutProps & any> = (props) => {
-  const { location, route, children, config, demos } = props
+  const { route, children, config, demos } = props
+
+  const location = useLocation()
   const pathWithoutPrefix = location.pathname.replace(
     // to avoid stripped the first /
     route.path.replace(/^\/$/, '//'),

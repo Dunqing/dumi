@@ -12,7 +12,8 @@
     "react-dom": "^17.0.0",
     "react-router-dom": "^6.3.0",
     "recast": "^0.20.5",
-    "@dumi/theme-default": "workspace:*"
+    "@dumi/theme-default": "workspace:*",
+    "@dumi/theme": "workspace:*"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",

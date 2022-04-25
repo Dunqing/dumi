@@ -45,6 +45,8 @@ export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
     import React, { lazy, useCallback } from 'react';
     import { Previewer as ThemePreviewer, Layout } from '@dumi/theme-default'
 
+    const meta = ${JSON.stringify(source.data)}
+
     ${await generateSources(source.data.components as Record<string, any>, resolve)}
     ${generateRuntimeComponent(source.data.components as Record<string, any>)}
 
@@ -61,7 +63,7 @@ export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
     }
 
     export default function markdown() {
-      return <Layout>${source}</Layout>
+      return <Layout meta={meta}>${source}</Layout>
     }
   `
 }

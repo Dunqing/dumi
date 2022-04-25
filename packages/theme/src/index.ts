@@ -9,6 +9,7 @@ export { default as useLocaleProps } from './hooks/useLocaleProps'
 export { default as useDemoUrl, getDemoUrl } from './hooks/useDemoUrl'
 export { default as useTSPlaygroundUrl } from './hooks/useTSPlaygroundUrl'
 export { default as usePrefersColor } from './hooks/usePrefersColor'
+export { default as OuterLayout } from './layout'
 
 export interface IPreviewerComponentProps {
   title?: string
