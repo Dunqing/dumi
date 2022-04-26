@@ -10,7 +10,7 @@ export default defineConfig({
       fileName: format => `index.${format === 'cjs' ? 'js' : 'mjs'}`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react-router-dom'],
+      external: ['react', 'react-dom', 'react-router-dom', '@dumi/theme'],
     },
     emptyOutDir: false,
   },

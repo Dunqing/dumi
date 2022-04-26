@@ -30,13 +30,13 @@ const Features = features => (
       <dl key={feat.title} style={{ backgroundImage: feat.icon ? `url(${feat.icon})` : undefined }}>
         {feat.link
           ? (
-          <Link to={feat.link}>
-            <dt>{feat.title}</dt>
-          </Link>
-            )
+            <Link to={feat.link}>
+              <dt>{feat.title}</dt>
+            </Link>
+          )
           : (
-          <dt>{feat.title}</dt>
-            )}
+            <dt>{feat.title}</dt>
+          )}
         <dd dangerouslySetInnerHTML={{ __html: feat.desc }} />
       </dl>
     ))}
@@ -68,7 +68,7 @@ const Layout: React.FC<any> = ({ children, meta }) => {
   const updatedTime: any = `${updatedTimeIns.toLocaleDateString([], { hour12: false })} ${updatedTimeIns.toLocaleTimeString([], { hour12: false })}`
   const repoPlatform
     = { github: 'GitHub', gitlab: 'GitLab' }[
-      (repoUrl || '').match(/(github|gitlab)/)?.[1] || 'nothing'
+    (repoUrl || '').match(/(github|gitlab)/)?.[1] || 'nothing'
     ] || platform
 
   return (
@@ -117,7 +117,7 @@ const Layout: React.FC<any> = ({ children, meta }) => {
       {showSlugs && <SlugList slugs={meta.slugs} className="__dumi-default-layout-toc" />}
       {showHero && Hero(meta.hero)}
       {showFeatures && Features(meta.features)}
-      <div className="__dumi-default-layout-content">
+      <div className="__dumi-dexault-layout-content">
         {children}
         {!showHero && !showFeatures && meta.filePath && !meta.gapless && (
           <div className="__dumi-default-layout-footer-meta">

@@ -25,10 +25,14 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
     base,
     meta,
   } = useContext(context)
+
+  const value = useContext(context)
+  console.log("🚀 ~ file: SideMenu.tsx ~ line 30 ~ value", value)
   const isHiddenMenus
     = Boolean((meta.hero || meta.features || meta.gapless) && mode === 'site')
     || meta.sidemenu === false
     || undefined
+
 
   return (
     <div
@@ -100,12 +104,12 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
               const menuPaths = hasChildren
                 ? item.children.map(i => i.path)
                 : [
-                    item.path,
-                    // handle menu group which has no index route and no valid children
-                    location.pathname.startsWith(`${item.path}/`) && meta.title === item.title
-                      ? location.pathname
-                      : null,
-                  ]
+                  item.path,
+                  // handle menu group which has no index route and no valid children
+                  location.pathname.startsWith(`${item.path}/`) && meta.title === item.title
+                    ? location.pathname
+                    : null,
+                ]
 
               return (
                 <li key={item.path || item.title}>

@@ -3,6 +3,7 @@ import type { Plugin, ResolvedConfig } from 'vite'
 import type { FilterPattern } from '@rollup/pluginutils'
 import { createFilter } from '@rollup/pluginutils'
 import { generateRoutes, transform } from './node'
+import { transformSync } from 'esbuild'
 
 interface PluginOptions {
   include?: FilterPattern
@@ -33,6 +34,7 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
       }
     },
     async load(id) {
+      console.log("🚀 ~ file: index.ts ~ line 36 ~ load ~ id", id)
       if (id.includes(MARKDOWN_ENTRY)) {
         return {
           code: `
@@ -43,10 +45,8 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
       }
 
       if (id === 'virtual:dumi-routes') {
-        const routes = await generateRoutes(config, this.resolve.bind(this))
-        return `
-          export default ${JSON.stringify(routes)}
-        `
+        return await generateRoutes(config, this.resolve.bind(this))
+
       }
 
       if (id.endsWith('.md')) {
@@ -54,7 +54,9 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
           return this.resolve(id, importer, {
             skipSelf: true,
           })
-        })
+        }).then((res) => transformSync(res.value.toString(), {
+          loader: 'tsx'
+        }))
       }
     },
     transformIndexHtml(html) {

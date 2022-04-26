@@ -37,6 +37,7 @@
     "url": "https://github.com/Dunqing/vite-plugin-dumi/issues"
   },
   "dependencies": {
+    "@dumi/theme": "workspace:*",
     "@babel/core": "^7.17.9",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/types": "^7.17.0",
