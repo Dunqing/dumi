@@ -38,6 +38,7 @@ const Link: ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = ({ to, onCl
       ref={ref}
       to={(to as any) || ''}
       {...externalProps}
+      {...props}
       onClick={(...args) => {
         if (!isExternal) {
           window.scrollTo({
