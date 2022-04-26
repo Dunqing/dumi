@@ -29,7 +29,6 @@ export const loadMarkdowns = async(root: string, resolve: ResolveFunction) => {
     const file = await transform(markdown.id, resolve)
     transformResults.push({
       ...markdown,
-      source: file.value,
       meta: file.data as unknown as MetaData,
     })
   }
@@ -54,12 +53,19 @@ export const buildingRoutes = async(config: ResolvedConfig, resolve: ResolveFunc
     paths.forEach((p) => {
       const cr = curRoutes.find(r => r.path === (p || '/'))
       const children: RouteObject[] = cr?.children || []
+      const index = indexRE.test(p)
       if (!cr) {
-        const index = indexRE.test(p)
         curRoutes.push({
           path: index ? undefined : p || '/',
           element: '',
           children,
+          index,
+        })
+      }
+      else {
+        Object.assign(cr, {
+          path: index ? undefined : p || '/',
+          element: '',
           index,
         })
       }
