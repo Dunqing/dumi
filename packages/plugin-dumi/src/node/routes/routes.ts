@@ -81,7 +81,6 @@ export const generateRoutes = async(config: ResolvedConfig, resolve: ResolveFunc
           paths.splice(0, 1, '/' + locale)
         }
         paths.push(namePath.replace(localesRE, ''))
-        console.log("🚀 ~ file: routes.ts ~ line 81 ~ Sources.forEach ~ paths", paths)
 
         let curRoutes = routes
         paths.forEach((p, index) => {
@@ -117,7 +116,6 @@ export const generateRoutes = async(config: ResolvedConfig, resolve: ResolveFunc
   export default buildingRoutes()
   `
 
-  console.log("🚀 ~ file: routes.ts ~ line 106 ~ generateRoutes ~ code", code)
   return transformSync(code, {
     loader: 'tsx'
   })

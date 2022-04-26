@@ -6,15 +6,15 @@ const { Provider } = context
 
 
 const RoutesElement = () => {
-  console.log("🚀 ~ file: RoutesElement.tsx ~ line 3 ~ routes", routes)
   const location = useLocation()
   const matchResult = matchRoutes(routes, location)
   const element = renderMatches(matchResult)
 
+  console.log(matchResult?.map(item => item.route))
 
   return <Provider value={{
     config: {
-      mode: "side",
+      mode: "site",
       repository: {
         url: '',
         branch: 'main',
@@ -25,7 +25,7 @@ const RoutesElement = () => {
     routes,
     nav: [],
     meta: matchResult?.[matchResult.length - 1].route.meta,
-    menu: matchResult?.map(item => item.route),
+    menu: matchResult?.[matchResult.length - 2].route.children,
   }}>{element}</Provider>
 }
 
