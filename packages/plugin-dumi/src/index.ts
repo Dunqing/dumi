@@ -24,6 +24,9 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
       config = _config
     },
     resolveId(id: string) {
+      if (id === 'virtual:dumi-routes')
+        return id
+
       if (id) {
         if (!filter(id))
           return undefined
@@ -31,15 +34,19 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
     },
     async load(id) {
       if (id.includes(MARKDOWN_ENTRY)) {
-        const routes = await generateRoutes(config, this.resolve.bind(this))
-        console.log('🚀 ~ file: index.ts ~ line 35 ~ load ~ routes', routes)
-
         return {
           code: `
             import ${JSON.stringify(entryPath)}
           `,
           moduleSideEffects: false,
         }
+      }
+
+      if (id === 'virtual:dumi-routes') {
+        const routes = await generateRoutes(config, this.resolve.bind(this))
+        return `
+          export default ${JSON.stringify(routes)}
+        `
       }
 
       if (id.endsWith('.md')) {

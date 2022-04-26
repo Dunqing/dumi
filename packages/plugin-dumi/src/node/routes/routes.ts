@@ -78,7 +78,5 @@ export const buildingRoutes = async(config: ResolvedConfig, resolve: ResolveFunc
 
 export const generateRoutes = async(config: ResolvedConfig, resolve: ResolveFunction) => {
   const routes = await buildingRoutes(config, resolve)
-  console.log(JSON.stringify(routes))
   return routes
-  // const tries = buildingPathTrie()
 }
