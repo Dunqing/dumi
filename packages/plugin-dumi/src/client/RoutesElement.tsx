@@ -24,6 +24,7 @@ const RoutesElement = () => {
     },
     routes,
     nav: [],
+    base: '/',
     meta: matchResult?.[matchResult.length - 1].route.meta,
     menu: matchResult?.[matchResult.length - 2].route.children,
   }}>{element}</Provider>

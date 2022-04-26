@@ -115,6 +115,7 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
                 <li key={item.path || item.title}>
                   <NavLink
                     to={item.path}
+                    end
                     isActive={() => menuPaths.includes(location.pathname)}
                   >
                     {item.title}
@@ -124,7 +125,7 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
                     <ul>
                       {item.children.map(child => (
                         <li key={child.path}>
-                          <NavLink to={child.path} exact>
+                          <NavLink to={child.path} end>
                             <span>{child.title}</span>
                           </NavLink>
                           {/* group children slugs */}
@@ -138,6 +139,7 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
                       ))}
                     </ul>
                   )}
+
                   {/* group slugs */}
                   {show1LevelSlugs && <SlugList slugs={meta.slugs} />}
                 </li>

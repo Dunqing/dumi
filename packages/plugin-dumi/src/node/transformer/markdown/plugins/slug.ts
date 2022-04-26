@@ -27,6 +27,7 @@ export const isHeading = function(element: any): element is Element {
 export const slug: Plugin = function() {
   return function(tree, file) {
     const slugger = getSlugger(file.path)
+    slugger.reset()
     visit(tree, { type: 'element' }, (element) => {
       if (isHeading(element)) {
         const title = toString({
