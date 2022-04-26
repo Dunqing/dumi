@@ -9,11 +9,12 @@ const RoutesElement = () => {
   console.log("🚀 ~ file: RoutesElement.tsx ~ line 3 ~ routes", routes)
   const location = useLocation()
   const matchResult = matchRoutes(routes, location)
-  console.log("🚀 ~ file: RoutesElement.tsx ~ line 12 ~ RoutesElement ~ matchResult", matchResult)
   const element = renderMatches(matchResult)
+
 
   return <Provider value={{
     config: {
+      mode: "side",
       repository: {
         url: '',
         branch: 'main',
@@ -22,8 +23,8 @@ const RoutesElement = () => {
       locales: [['en-US', 'English'], ['zh-CN', '中文']]
     },
     routes,
-    meta: {},
     nav: [],
+    meta: matchResult?.[matchResult.length - 1].route.meta,
     menu: matchResult?.map(item => item.route),
   }}>{element}</Provider>
 }

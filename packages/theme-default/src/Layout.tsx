@@ -43,10 +43,11 @@ const Features = features => (
   </div>
 )
 
-const Layout: React.FC<any> = ({ children, meta }) => {
+const Layout: React.FC<any> = ({ children }) => {
   const {
     config: { mode, repository },
     locale,
+    meta,
   } = useContext(context)
 
   const location = useLocation()

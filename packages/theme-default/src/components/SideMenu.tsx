@@ -26,8 +26,7 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
     meta,
   } = useContext(context)
 
-  const value = useContext(context)
-  console.log("🚀 ~ file: SideMenu.tsx ~ line 30 ~ value", value)
+
   const isHiddenMenus
     = Boolean((meta.hero || meta.features || meta.gapless) && mode === 'site')
     || meta.sidemenu === false
@@ -101,6 +100,7 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
               const hasChildren = item.children && Boolean(item.children.length)
               const show1LevelSlugs
                 = meta.toc === 'menu' && !hasChildren && hasSlugs && item.path === location.pathname.replace(/([^^])\/$/, '$1')
+              console.log("🚀 ~ file: SideMenu.tsx ~ line 103 ~ &&menu.map ~ show1LevelSlugs", show1LevelSlugs, meta)
               const menuPaths = hasChildren
                 ? item.children.map(i => i.path)
                 : [

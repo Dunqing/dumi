@@ -42,6 +42,8 @@ export const loadMarkdowns = async(root: string, resolve: ResolveFunction) => {
 
 export const generateRoutes = async(config: ResolvedConfig, resolve: ResolveFunction) => {
   const Sources = await loadMarkdowns(config.root, resolve)
+  const locales = [['en-US', 'English'], ['zh-CN', '中文']].map(i => i[0])
+
 
   const code = `
     import React, { lazy } from 'react'
@@ -58,6 +60,8 @@ export const generateRoutes = async(config: ResolvedConfig, resolve: ResolveFunc
 
     const Sources = ${JSON.stringify(Sources)}
 
+    const firstLocale = ${JSON.stringify(locales[0])}
+    const localesRE = new RegExp('\\\\.(${locales.join('|')})$')
     const indexRE = /index$/
 
     const buildingRoutes = () => {
@@ -67,8 +71,17 @@ export const generateRoutes = async(config: ResolvedConfig, resolve: ResolveFunc
       Sources.forEach((item) => {
         const routePath = routePathRE.exec(item.id)![2]
         let paths = routePath.split('/')
+        const namePath = paths[paths.length - 1]
+        paths = paths.slice(0, -1)
         const metaPath = (item.meta.nav?.path || '') + (item.meta.group?.path || '')
         paths = metaPath ? paths.splice(0, paths.length - 2, ...metaPath.split('/')) : paths
+
+        const locale = localesRE.exec(namePath)?.[1]
+        if (locale && locale !== firstLocale) {
+          paths.splice(0, 1, '/' + locale)
+        }
+        paths.push(namePath.replace(localesRE, ''))
+        console.log("🚀 ~ file: routes.ts ~ line 81 ~ Sources.forEach ~ paths", paths)
 
         let curRoutes = routes
         paths.forEach((p, index) => {
