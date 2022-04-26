@@ -1,5 +1,5 @@
-import path from "path"
-import { normalizePath } from "vite"
+import path from 'path'
+import { normalizePath } from 'vite'
 import glob from 'fast-glob'
 
 export const detectMarkdowns = (root: string) => {
@@ -9,9 +9,8 @@ export const detectMarkdowns = (root: string) => {
   }).map((p) => {
     return {
       id: normalizePath(p),
-      path: normalizePath(path.posix.join(root, p))
+      path: normalizePath(path.posix.join(root, p)),
     }
   })
   return paths
 }
-
