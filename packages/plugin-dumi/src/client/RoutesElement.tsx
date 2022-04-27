@@ -22,14 +22,14 @@ const RoutesElement = () => {
     locales: [['en-US', 'English'], ['zh-CN', '中文']] as [string, string][]
   }
 
-  const locale = useCurrentLocale(Config.locales)
+  const [locale, isDefault] = useCurrentLocale(Config.locales)
 
 
   return <Provider value={{
     config: Config,
     routes,
     nav: nav[locale],
-    base: '/',
+    base: `/${isDefault ? '' : locale}`,
     locale,
     meta: matchResult?.[matchResult.length - 1].route.meta,
     menu: matchResult?.[matchResult.length - 2].route.children,
