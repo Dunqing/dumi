@@ -28,7 +28,7 @@ const RoutesElement = () => {
   return <Provider value={{
     config: Config,
     routes,
-    nav: nav['zh-CN'],
+    nav: nav[locale],
     base: '/',
     locale,
     meta: matchResult?.[matchResult.length - 1].route.meta,
