@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import throttle from 'lodash.throttle'
 import type { NavLinkProps } from 'react-router-dom'
-import { NavLink } from 'react-router-dom'
+import NavLink from './NavLink'
 
 const anchorWatcher = new (class {
   anchors: HTMLAnchorElement[] = []
@@ -113,12 +113,15 @@ const AnchorLink: React.FC<NavLinkProps> & { scrollToAnchor: (anchor: string) =>
     return () => anchorWatcher.unlisten(fn)
   }, [])
 
+  console.log("🚀 ~ file: AnchorLink.tsx ~ line 125 ~ props", props)
+
+
   return (
     <NavLink
       {...props}
       ref={ref}
       onClick={() => AnchorLink.scrollToAnchor(hash.substring(1))}
-    // isActive={() => isActive}
+      active={isActive}
     />
   )
 }

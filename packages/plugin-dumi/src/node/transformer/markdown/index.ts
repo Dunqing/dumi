@@ -16,7 +16,8 @@ const processor = unified()
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(codeblock)
   .use(slug)
-  .use(rehypeAutolinkHeadings)
+  .use(rehypeAutolinkHeadings, {
+  })
   .use(rehypeRaw, {
     passThrough: ['demo'],
   })

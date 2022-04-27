@@ -63,7 +63,11 @@ export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
     }
 
     export default function markdown() {
-      return <Layout meta={meta}>${source}</Layout>
+      return <Layout meta={meta}>
+        <div className="markdown">
+          ${source}
+        </div>
+      </Layout>
     }
   `
 }
