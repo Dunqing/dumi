@@ -42,6 +42,7 @@ const generateRuntimeComponent = (components?: Record<string, string>) => {
 export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
   return `
     import React, { lazy, useCallback } from 'react';
+    import { AnchorLink } from '@dumi/theme'
     import { Previewer as ThemePreviewer, Layout } from '@dumi/theme-default'
 
     const meta = ${JSON.stringify(source.data)}
