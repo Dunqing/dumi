@@ -113,9 +113,6 @@ const AnchorLink: React.FC<NavLinkProps> & { scrollToAnchor: (anchor: string) =>
     return () => anchorWatcher.unlisten(fn)
   }, [])
 
-  console.log("🚀 ~ file: AnchorLink.tsx ~ line 125 ~ props", props)
-
-
   return (
     <NavLink
       {...props}

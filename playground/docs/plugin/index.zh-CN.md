@@ -1,7 +1,7 @@
 ---
 toc: menu
 nav:
-  title: 插件xrxt
+  title: 插件
   order: 4
 ---
 

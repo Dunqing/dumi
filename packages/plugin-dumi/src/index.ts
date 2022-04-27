@@ -2,7 +2,7 @@ import path from 'path'
 import type { Plugin, ResolvedConfig } from 'vite'
 import type { FilterPattern } from '@rollup/pluginutils'
 import { createFilter } from '@rollup/pluginutils'
-import { generateRoutes, transform } from './node'
+import { dumiProvider, transform } from './node'
 import { transformSync } from 'esbuild'
 
 interface PluginOptions {
@@ -25,7 +25,7 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
       config = _config
     },
     resolveId(id: string) {
-      if (id === 'virtual:dumi-routes')
+      if (id === 'virtual:dumi-provider')
         return id
 
       if (id) {
@@ -44,8 +44,8 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
         }
       }
 
-      if (id === 'virtual:dumi-routes') {
-        return await generateRoutes(config, this.resolve.bind(this))
+      if (id === 'virtual:dumi-provider') {
+        return await dumiProvider(config, this.resolve.bind(this))
 
       }
 

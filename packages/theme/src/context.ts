@@ -63,7 +63,7 @@ export interface IThemeContext {
     /**
      * locale configurations
      */
-    locales: ILocale[]
+    locales: [string, string][]
     /**
      * algolia configurations
      */
