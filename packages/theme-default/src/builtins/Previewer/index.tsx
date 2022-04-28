@@ -88,6 +88,7 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
   const [iframeKey, setIframeKey] = useState(Math.random())
   const currentFileCode
     = props.sources[currentFile][sourceType] || props.sources[currentFile].content
+  console.log("🚀 ~ file: index.tsx ~ line 90 ~ currentFileCode", currentFileCode)
   const playgroundUrl = useTSPlaygroundUrl(locale, currentFileCode)
   const iframeRef = useRef<HTMLIFrameElement>()
   const [color] = usePrefersColor()

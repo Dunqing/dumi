@@ -5,7 +5,7 @@ import remarkParse from 'remark-parse/lib'
 import remarkStringify from 'remark-stringify'
 import { unified } from 'unified'
 import { describe, expect, it } from 'vitest'
-import { meta } from '../transformer/markdown/plugins'
+import { meta } from '../node/transformer/markdown/plugins'
 
 const readFile = (file: string) => {
   return readFileSync(path.resolve(__dirname, file)).toString()
@@ -19,18 +19,16 @@ describe('plugins', () => {
     const file = processor.use([remarkFrontmatter, meta]).processSync(markdown)
     expect(file.data).toMatchInlineSnapshot(`
       {
-        "metadata": {
-          "group": {
-            "path": "/",
-          },
-          "legacy": "/table",
-          "nav": {
-            "path": "/components",
-            "title": "组件",
-          },
-          "order": 0,
-          "title": "ProTable - 高级表格",
+        "group": {
+          "path": "/",
         },
+        "legacy": "/table",
+        "nav": {
+          "path": "/components",
+          "title": "组件",
+        },
+        "order": 0,
+        "title": "ProTable - 高级表格",
       }
     `)
   })

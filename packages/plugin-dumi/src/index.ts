@@ -34,7 +34,6 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
       }
     },
     async load(id) {
-      console.log("🚀 ~ file: index.ts ~ line 36 ~ load ~ id", id)
       if (id.includes(MARKDOWN_ENTRY)) {
         return {
           code: `

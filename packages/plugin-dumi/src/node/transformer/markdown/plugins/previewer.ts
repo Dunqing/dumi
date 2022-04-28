@@ -5,6 +5,7 @@ import type { Element, Parent } from 'hast'
 
 export const previewer: Plugin = function() {
   return (root, file) => {
+
     return visit(root, {
       type: 'element',
       tagName: 'code',

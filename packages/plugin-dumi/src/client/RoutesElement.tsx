@@ -2,7 +2,6 @@ import { matchRoutes, useLocation, renderMatches } from 'react-router-dom'
 import { context } from '@dumi/theme'
 import { routes, nav } from 'virtual:dumi-provider'
 import { useCurrentLocale } from './hooks'
-console.log("🚀 ~ file: RoutesElement.tsx ~ line 4 ~ nav", nav)
 
 const { Provider } = context
 

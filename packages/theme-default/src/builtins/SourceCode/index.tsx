@@ -14,19 +14,20 @@ const SIMILAR_DSL = {
 }
 
 export interface ICodeBlockProps {
-  code: string
+  code?: string
+  children?: string
   lang: Language
   showCopy?: boolean
 }
 
-export default function SourceCode({ code, lang, showCopy = true }: ICodeBlockProps) {
+export default function SourceCode({ code, children, lang, showCopy = true }: ICodeBlockProps) {
   const [copyCode, copyStatus] = useCopy()
 
   return (
     <div className="__dumi-default-code-block">
       <Highlight
         {...defaultProps}
-        code={code}
+        code={(code || children)?.replace(/\n$/, '')!}
         language={SIMILAR_DSL[lang] || lang}
         theme={undefined}
       >
@@ -36,7 +37,7 @@ export default function SourceCode({ code, lang, showCopy = true }: ICodeBlockPr
               <button
                 className="__dumi-default-icon __dumi-default-code-block-copy-btn"
                 data-status={copyStatus}
-                onClick={() => copyCode(code)}
+                onClick={() => copyCode(code || children)!}
               />
             )}
             {tokens.map((line, i) => (

@@ -14,13 +14,10 @@ const processor = unified()
   .use(meta)
   .use(remarkParse)
   .use(remarkRehype, { allowDangerousHtml: true })
+  .use(rehypeRaw, { passThrough: ['element']})
   .use(codeblock)
   .use(slug)
-  .use(rehypeAutolinkHeadings, {
-  })
-  .use(rehypeRaw, {
-    passThrough: ['demo'],
-  })
+  .use(rehypeAutolinkHeadings)
   .use(link)
   .use(embed)
   .use(previewer)
