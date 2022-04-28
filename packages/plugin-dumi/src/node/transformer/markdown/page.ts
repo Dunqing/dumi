@@ -1,14 +1,23 @@
+import { Loader } from 'esbuild'
 import type { VFile } from 'vfile'
-import { analyzeDeps } from '../parser'
+import { analyzeDeps, exportDefaultToConst, exportDefaultToReturn } from '../parser'
 import type { ResolveFunction } from '../types'
+import { getFilenameExt } from '../utils'
 
-const generateSources = async(components: Record<string, string> | undefined, resolve: ResolveFunction) => {
-  const keys = Object.keys(components || {})
+const generateSources = async (source: VFile, resolve: ResolveFunction) => {
+  const previewers = source.data.previewers as Record<string, any>
+  if (!previewers) return ''
+  const keys = Object.keys(previewers || {})
   const maps: Record<string, any> = {}
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
-    const deps = await analyzeDeps(components![key], resolve)
+    const deps = await analyzeDeps({
+      ...previewers[key],
+      lang: getFilenameExt(key),
+      importer: source.path,
+      resolve,
+    })
     maps[key] = deps
   }
 
@@ -23,15 +32,24 @@ const generateSources = async(components: Record<string, string> | undefined, re
   `
 }
 
-const generateRuntimeComponent = (components?: Record<string, string>) => {
+const generateRuntimeComponent = (previewers?: Record<string, { path?: string, source?: string }>) => {
+  const keys = Object.keys(previewers || {})
+  const getName = (index: number) => `runtimeComponent${index}`
   return `
+
+    ${keys.map((k, index) => {
+    const { path, source } = previewers![k]
+    const name = getName(index)
+    console.log("🚀 ~ file: page.ts ~ line 43 ~ ${keys.map ~ name", name, source)
+    return source ? exportDefaultToConst(source, getFilenameExt(k) as Loader, name) : `import ${name} from ${JSON.stringify(path)}`
+  }).join('\n')}
+
     function __runtimeComponent__(src) {
       switch (src) {
-        ${
-          Object.keys(components || {}).map((key) => {
-            return `case ${JSON.stringify(key)}: return lazy(() => import(${JSON.stringify(components![key])}));`
-          }).join('\n')
-        }
+        ${keys.map((k, index) => {
+    return `case ${JSON.stringify(k)}: return ${getName(index)}`
+  }).join('\n')
+    }
         default:
           return null;
       }
@@ -39,16 +57,14 @@ const generateRuntimeComponent = (components?: Record<string, string>) => {
   `
 }
 
-export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
+export const renderPage = async (source: VFile, resolve: ResolveFunction) => {
   return `
     import React, { lazy, useCallback } from 'react';
     import { AnchorLink } from '@dumi/theme'
     import { Previewer as ThemePreviewer, Layout, SourceCode } from '@dumi/theme-default'
 
-    const meta = ${JSON.stringify(source.data)}
-
-    ${await generateSources(source.data.components as Record<string, any>, resolve)}
-    ${generateRuntimeComponent(source.data.components as Record<string, any>)}
+    ${await generateSources(source, resolve)}
+    ${generateRuntimeComponent(source.data.previewers as Record<string, any>)}
 
     const Previewer = (props) => {
       return <ThemePreviewer {...props} {...additionalPreviewerProps[props.src]} />
@@ -63,7 +79,7 @@ export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
     }
 
     export default function markdown() {
-      return <Layout meta={meta}>
+      return <Layout meta={${JSON.stringify(source.data)}}>
         <div className="markdown">
           ${source}
         </div>
@@ -72,6 +88,6 @@ export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
   `
 }
 
-export const generatePage = async(file: VFile, resolve: ResolveFunction) => {
+export const generatePage = async (file: VFile, resolve: ResolveFunction) => {
   return await renderPage(file, resolve)
 }

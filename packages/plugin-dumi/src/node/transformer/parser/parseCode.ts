@@ -15,6 +15,13 @@ export const parseFile = (filePath: string): any => {
     return parseSync(transformResult.code)
 
   } catch (err) {
-  console.log("🚀 ~ file: parseCode.ts ~ line 18 ~ parseFile ~ err", filePath, source)
+    console.log("🚀 ~ file: parseCode.ts ~ line 18 ~ parseFile ~ err", filePath, source)
   }
+}
+
+export const parseCode = (code: string, ext?: Loader): any => {
+  const transformResult = transformSync(code, {
+    loader: (ext as Loader) || 'tsx',
+  })
+  return parseSync(transformResult.code)
 }

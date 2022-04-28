@@ -2,8 +2,9 @@ import path from 'path'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 import type { Element, Parent } from 'hast'
+import { replaceElementToPreviewer } from '../utils/node'
 
-export const previewer: Plugin = function() {
+export const previewer: Plugin = function () {
   return (root, file) => {
 
     return visit(root, {
@@ -16,28 +17,13 @@ export const previewer: Plugin = function() {
 
       const codePath = path.posix.join(file.dirname!, src)
 
-      file.data.components = Object.assign({}, file.data.components, {
-        [src]: codePath,
+      file.data.previewers = Object.assign({}, file.data.previewers, {
+        [src]: {
+          path: codePath,
+        },
       })
 
-      parent.children.splice(index, 1, {
-        type: 'element',
-        tagName: 'Previewer',
-        properties: {
-          ...node.properties,
-        },
-        position: node.position,
-        children: [
-          {
-            type: 'element',
-            tagName: 'CodeComponent',
-            properties: {
-              src: node.properties?.src,
-            },
-            children: [],
-          },
-        ],
-      })
+      replaceElementToPreviewer(node, parent, index)
     })
   }
 }

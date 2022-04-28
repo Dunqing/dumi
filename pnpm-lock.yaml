@@ -29,7 +29,9 @@ importers:
   packages/plugin-dumi:
     specifiers:
       '@antfu/eslint-config': ^0.20.6
+      '@babel__generator': link:@types/@babel__generator
       '@babel/core': ^7.17.9
+      '@babel/generator': ^7.17.9
       '@babel/preset-typescript': ^7.16.7
       '@babel/types': ^7.17.0
       '@dumi/theme': workspace:*
@@ -76,7 +78,9 @@ importers:
       vitest: ^0.9.3
       yaml: ^2.0.1
     dependencies:
+      '@babel__generator': link:@types/@babel__generator
       '@babel/core': 7.17.9
+      '@babel/generator': 7.17.9
       '@babel/preset-typescript': 7.16.7_@babel+core@7.17.9
       '@babel/types': 7.17.0
       '@dumi/theme': link:../theme

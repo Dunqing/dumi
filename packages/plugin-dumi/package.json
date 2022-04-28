@@ -38,8 +38,10 @@
   },
   "dependencies": {
     "@babel/core": "^7.17.9",
+    "@babel/generator": "^7.17.9",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/types": "^7.17.0",
+    "@babel__generator": "link:@types/@babel__generator",
     "@dumi/theme": "workspace:*",
     "@dumi/theme-default": "workspace:*",
     "@rollup/pluginutils": "^4.2.1",

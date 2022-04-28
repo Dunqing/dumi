@@ -1,15 +1,13 @@
 import { readFileSync } from 'fs'
-import { traverse } from '@babel/core'
+import { Node, traverse } from '@babel/core'
 import { isIdentifier, isStringLiteral } from '@babel/types'
 import type { ResolveFunction } from '../types'
 import { getFilenameExt } from '../utils'
-import { parseFile } from './parseCode'
+import { parseCode, parseFile } from './parseCode'
 
 const isRelativeRE = /^\.\//
 
-const collectSources = (filePath: string) => {
-  const ast = parseFile(filePath)!
-
+const collectSources = (ast: Node) => {
   const temp = new Set<string>()
 
   if (ast) {
@@ -29,25 +27,29 @@ const collectSources = (filePath: string) => {
   return Array.from(temp)
 }
 
-interface Sources {
-  lang: string
-  content: string
-}
-
 const allowExt = /(.m?tsx?|.m?jsx?)$/
 
-export const analyzeDeps = async(filePath: string, resolve: ResolveFunction) => {
+interface AnalyzeDepsOptions {
+  path?: string,
+  source?: string,
+  // source lang
+  lang?: string
+  importer?: string,
+  resolve: ResolveFunction
+}
+
+export const analyzeDeps = async ({ resolve, ...options }: AnalyzeDepsOptions) => {
   const dependencies = new Set<string>()
 
-  const traverseFiles = async(file: string) => {
+  const traverseFiles = async ({ path, source, importer }: Omit<AnalyzeDepsOptions, 'resolve'>) => {
 
-    if (!allowExt.test(file)) return
+    if (path && !allowExt.test(path)) return
 
     let filesMap: Record<string, string> = {}
-    const sources = collectSources(file)
+    const sources = collectSources(path ? parseFile(path) : parseCode(source!))
 
-    const checkSource = async(id: string) => {
-      const resolved = await resolve(id, filePath)
+    const checkSource = async (id: string) => {
+      const resolved = await resolve(id, path || importer)
       if (resolved) {
         if (resolved.id.includes('node_modules'))
           return dependencies.add(id)
@@ -61,17 +63,19 @@ export const analyzeDeps = async(filePath: string, resolve: ResolveFunction) => 
       await checkSource(id)
     }
 
-    for (const file of Object.values(filesMap)) {
+    for (const p of Object.values(filesMap)) {
       filesMap = {
         ...filesMap,
-        ...(await traverseFiles(file)),
+        ...(await traverseFiles({
+          path: p,
+        })),
       }
     }
 
     return filesMap
   }
 
-  const filesMap = await traverseFiles(filePath)
+  const filesMap = await traverseFiles(options) || {}
   const sources = Object.keys(filesMap).reduce((res, key) => {
     const path = filesMap[key]
     const fileName = key.includes('.') ? key : `${key}.${getFilenameExt(path)}`
@@ -86,9 +90,9 @@ export const analyzeDeps = async(filePath: string, resolve: ResolveFunction) => 
 
   return {
     sources: {
-      [`index.${getFilenameExt(filePath)}`]: {
-        lang: getFilenameExt(filePath),
-        content: readFileSync(filePath).toString(),
+      [`index.${options.path ? getFilenameExt(options.path) : options.lang}`]: {
+        lang: options.lang,
+        content: options.path ? readFileSync(options.path).toString() : options.source,
       },
       ...sources,
     },
