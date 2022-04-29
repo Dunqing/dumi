@@ -23,6 +23,11 @@ export const previewer: Plugin = function () {
         },
       })
 
+      if (node.properties?.inline !== undefined || node.properties?.inline !== false) {
+        node.tagName = 'CodeComponent'
+        return
+      }
+
       replaceElementToPreviewer(node, parent, index)
     })
   }

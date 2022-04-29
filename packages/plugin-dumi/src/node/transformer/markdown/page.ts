@@ -35,12 +35,11 @@ const generateSources = async (source: VFile, resolve: ResolveFunction) => {
 const generateRuntimeComponent = (previewers?: Record<string, { path?: string, source?: string }>) => {
   const keys = Object.keys(previewers || {})
   const getName = (index: number) => `runtimeComponent${index}`
-  return `
 
+  return `
     ${keys.map((k, index) => {
     const { path, source } = previewers![k]
     const name = getName(index)
-    console.log("🚀 ~ file: page.ts ~ line 43 ~ ${keys.map ~ name", name, source)
     return source ? exportDefaultToConst(source, getFilenameExt(k) as Loader, name) : `import ${name} from ${JSON.stringify(path)}`
   }).join('\n')}
 
