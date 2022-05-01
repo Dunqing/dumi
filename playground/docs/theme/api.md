@@ -141,19 +141,19 @@ For theme developer:
 - Get current prefers color & toggle function via this react hook, to provide a button to toggle dark/light mode for user, for example:
 
 ```tsx | pure
-import React from 'react';
-import { usePrefersColor } from 'dumi/theme';
+import React from 'react'
+import { usePrefersColor } from 'dumi/theme'
 
-export default props => {
-  const [color, setColor] = usePrefersColor();
+export default (props) => {
+  const [color, setColor] = usePrefersColor()
 
   return (
     <>
       <button onClick={() => setColor('auto')}>Enable auto prefers color</button>
       Current prefers color: {color}
     </>
-  );
-};
+  )
+}
 ```
 
 More informations in [#543](https://github.com/umijs/dumi/pull/543)。

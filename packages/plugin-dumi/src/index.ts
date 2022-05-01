@@ -2,8 +2,8 @@ import path from 'path'
 import type { Plugin, ResolvedConfig } from 'vite'
 import type { FilterPattern } from '@rollup/pluginutils'
 import { createFilter } from '@rollup/pluginutils'
-import { dumiProvider, transform } from './node'
 import { transformSync } from 'esbuild'
+import { dumiProvider, transform } from './node'
 
 interface PluginOptions {
   include?: FilterPattern
@@ -43,18 +43,16 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
         }
       }
 
-      if (id === 'virtual:dumi-provider') {
+      if (id === 'virtual:dumi-provider')
         return await dumiProvider(config, this.resolve.bind(this))
-
-      }
 
       if (id.endsWith('.md')) {
         return transform(id, (id: string, importer?: string) => {
           return this.resolve(id, importer, {
             skipSelf: true,
           })
-        }).then((res) => transformSync(res.value.toString(), {
-          loader: 'tsx'
+        }).then(res => transformSync(res.value.toString(), {
+          loader: 'tsx',
         }))
       }
     },

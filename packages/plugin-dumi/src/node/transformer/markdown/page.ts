@@ -1,12 +1,13 @@
-import { Loader } from 'esbuild'
+import type { Loader } from 'esbuild'
 import type { VFile } from 'vfile'
 import { analyzeDeps, exportDefaultToConst, exportDefaultToReturn } from '../parser'
 import type { ResolveFunction } from '../types'
 import { getFilenameExt } from '../utils'
 
-const generateSources = async (source: VFile, resolve: ResolveFunction) => {
+const generateSources = async(source: VFile, resolve: ResolveFunction) => {
   const previewers = source.data.previewers as Record<string, any>
-  if (!previewers) return ''
+  if (!previewers)
+    return ''
   const keys = Object.keys(previewers || {})
   const maps: Record<string, any> = {}
 
@@ -32,7 +33,7 @@ const generateSources = async (source: VFile, resolve: ResolveFunction) => {
   `
 }
 
-const generateRuntimeComponent = (previewers?: Record<string, { path?: string, source?: string }>) => {
+const generateRuntimeComponent = (previewers?: Record<string, { path?: string; source?: string }>) => {
   const keys = Object.keys(previewers || {})
   const getName = (index: number) => `runtimeComponent${index}`
 
@@ -56,7 +57,7 @@ const generateRuntimeComponent = (previewers?: Record<string, { path?: string, s
   `
 }
 
-export const renderPage = async (source: VFile, resolve: ResolveFunction) => {
+export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
   return `
     import React, { lazy, useCallback } from 'react';
     import { AnchorLink } from '@dumi/theme'
@@ -87,6 +88,6 @@ export const renderPage = async (source: VFile, resolve: ResolveFunction) => {
   `
 }
 
-export const generatePage = async (file: VFile, resolve: ResolveFunction) => {
+export const generatePage = async(file: VFile, resolve: ResolveFunction) => {
   return await renderPage(file, resolve)
 }

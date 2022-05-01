@@ -1,8 +1,8 @@
 import type { ResolvedConfig } from 'vite'
+import { transformSync } from 'esbuild'
 import type { ResolveFunction } from '../transformer'
 import { transform } from '../transformer'
 import { detectMarkdowns } from './markdown'
-import { transformSync } from 'esbuild'
 
 interface MetaData {
   group?: {
@@ -17,7 +17,6 @@ interface MetaData {
   }
   slugs: any[]
 }
-
 
 export const loadMarkdowns = async(root: string, resolve: ResolveFunction) => {
   const paths = detectMarkdowns(root)
@@ -39,9 +38,7 @@ export const loadMarkdowns = async(root: string, resolve: ResolveFunction) => {
 type PickPromiseType<T> = T extends Promise<infer U> ? U : T
 type SourcesType = PickPromiseType<ReturnType<typeof loadMarkdowns>>
 
-
 export const generateRoutes = (Sources: SourcesType) => {
-
   return `
       const buildingRoutes = () => {
         const __runtimeComponent__ = (src) => {
@@ -95,7 +92,6 @@ export const generateRoutes = (Sources: SourcesType) => {
 }
 
 export const generateNav = () => {
-
   return `
     function generateNav() {
       const localesNav = {}
@@ -125,14 +121,13 @@ export const generateNav = () => {
     }
 
     export const nav = generateNav()
-  `  
+  `
 }
-
 
 export const dumiProvider = async(config: ResolvedConfig, resolve: ResolveFunction) => {
   const Sources = await loadMarkdowns(config.root, resolve)
   const locales = [['en-US', 'English'], ['zh-CN', '中文']].map(i => i[0])
-  
+
   const code = `
     import React, { lazy } from 'react'
 
@@ -164,6 +159,6 @@ export const dumiProvider = async(config: ResolvedConfig, resolve: ResolveFuncti
   `
 
   return transformSync(code, {
-    loader: 'tsx'
+    loader: 'tsx',
   })
 }

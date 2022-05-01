@@ -22,10 +22,10 @@ It can be understood as a Demo action. If the developer writes motions in advanc
  *  - timeout:1000
  *  - click:[data-action="reset"]
  */
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 export default () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -42,8 +42,8 @@ export default () => {
         reset
       </button>
     </>
-  );
-};
+  )
+}
 ```
 
 You will get the following Demo, try to click the play button on the operation bar, the motions predefined by developer will be executed in sequence:
@@ -57,10 +57,10 @@ You will get the following Demo, try to click the play button on the operation b
  *  - timeout:1000
  *  - click:[data-action="reset"]
  */
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 export default () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -77,8 +77,8 @@ export default () => {
         reset
       </button>
     </>
-  );
-};
+  )
+}
 ```
 
 Currently supports the following motion syntax:

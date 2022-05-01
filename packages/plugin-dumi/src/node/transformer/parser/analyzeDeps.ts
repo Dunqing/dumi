@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs'
-import { Node, traverse } from '@babel/core'
+import type { Node } from '@babel/core'
+import { traverse } from '@babel/core'
 import { isIdentifier, isStringLiteral } from '@babel/types'
 import type { ResolveFunction } from '../types'
 import { getFilenameExt } from '../utils'
@@ -30,25 +31,25 @@ const collectSources = (ast: Node) => {
 const allowExt = /(.m?tsx?|.m?jsx?)$/
 
 interface AnalyzeDepsOptions {
-  path?: string,
-  source?: string,
+  path?: string
+  source?: string
   // source lang
   lang?: string
-  importer?: string,
+  importer?: string
   resolve: ResolveFunction
 }
 
-export const analyzeDeps = async ({ resolve, ...options }: AnalyzeDepsOptions) => {
+export const analyzeDeps = async({ resolve, ...options }: AnalyzeDepsOptions) => {
   const dependencies = new Set<string>()
 
-  const traverseFiles = async ({ path, source, importer }: Omit<AnalyzeDepsOptions, 'resolve'>) => {
-
-    if (path && !allowExt.test(path)) return
+  const traverseFiles = async({ path, source, importer }: Omit<AnalyzeDepsOptions, 'resolve'>) => {
+    if (path && !allowExt.test(path))
+      return
 
     let filesMap: Record<string, string> = {}
     const sources = collectSources(path ? parseFile(path) : parseCode(source!))
 
-    const checkSource = async (id: string) => {
+    const checkSource = async(id: string) => {
       const resolved = await resolve(id, path || importer)
       if (resolved) {
         if (resolved.id.includes('node_modules'))

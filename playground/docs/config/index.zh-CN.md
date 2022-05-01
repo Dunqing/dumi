@@ -15,7 +15,7 @@ nav:
 // 配置文件
 export default {
   // 具体配置项
-};
+}
 ```
 
 目前 dumi 支持以下配置项。
@@ -151,7 +151,7 @@ export default {
       // 省略，配置同上
     ],
   },
-};
+}
 ```
 
 ### navs
@@ -201,7 +201,7 @@ export default {
       },
     ],
   },
-};
+}
 ```
 
 ### resolve

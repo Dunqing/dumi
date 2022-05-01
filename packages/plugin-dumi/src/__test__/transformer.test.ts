@@ -8,8 +8,8 @@ const readFile = (file: string) => {
 }
 
 describe('transformer', () => {
-  it('frontmatter work', async () => {
+  it('frontmatter work', async() => {
     const id = path.resolve(__dirname, './md/code.md')
-    await transform(id, () => null) 
+    await transform(id, () => null)
   })
 })

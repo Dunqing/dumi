@@ -135,19 +135,19 @@ export default props => {
 - 可以通过该 hook，可以拿到当前色彩偏好的值以及切换函数，以便为用户提供开关来切换暗黑/明亮模式，例如：
 
 ```tsx | pure
-import React from 'react';
-import { usePrefersColor } from 'dumi/theme';
+import React from 'react'
+import { usePrefersColor } from 'dumi/theme'
 
-export default props => {
-  const [color, setColor] = usePrefersColor();
+export default (props) => {
+  const [color, setColor] = usePrefersColor()
 
   return (
     <>
       <button onClick={() => setColor('auto')}>启用自动主题色</button>
       当前主题色配置为：{color}
     </>
-  );
-};
+  )
+}
 ```
 
 更多信息可参考 [#543](https://github.com/umijs/dumi/pull/543)。

@@ -77,9 +77,9 @@ yarn add dumi cross-env -D
 ```js
 export default {
   chainWebpack(memo) {
-    memo.plugins.delete('copy');
+    memo.plugins.delete('copy')
   },
-};
+}
 ```
 
 4. 新建文档目录 `dumi/docs/`，这里的 `dumi` 目录即第二步中配置的环境变量，你可以随意同步修改。
@@ -124,7 +124,7 @@ export default {
   publicPath: '/静态资源起始路径/',
   exportStatic: {}, // 将所有路由输出为 HTML 目录结构，以免刷新页面时 404
   // 其他配置
-};
+}
 ```
 
 > 文档项目独立时, 通常 `base` 和 `publicPath` 配置项相同。
@@ -242,19 +242,19 @@ extraBabelPlugins: [
     {
       libraryName: 'lean',
       camel2DashComponentName: false,
-      customStyleName: name => {
-        return `./style/index.less`; // 注意：这里 ./ 不可省略
+      customStyleName: (name) => {
+        return `./style/index.less` // 注意：这里 ./ 不可省略
       },
     },
     'lean',
   ],
-];
+]
 ```
 
 在 md 中引入组件：
 
 ```tsx | pure
-import { Button } from 'lean'; // 这里会按需引入样式
+import { Button } from 'lean' // 这里会按需引入样式
 ```
 
 ## dumi 如何支持对 Swift、C#、Kotlin 等语言的语法高亮？
@@ -267,10 +267,10 @@ dumi 语法高亮使用的 [prism-react-renderer](https://github.com/FormidableL
 // src/app.ts
 import Prism from 'prism-react-renderer/prism';
 
-(typeof global !== 'undefined' ? global : window).Prism = Prism;
+(typeof global !== 'undefined' ? global : window).Prism = Prism
 
-require('prismjs/components/prism-kotlin');
-require('prismjs/components/prism-csharp');
+require('prismjs/components/prism-kotlin')
+require('prismjs/components/prism-csharp')
 ```
 
 ## 非 umi 项目启动 dumi 后提示 Error: register failed, invalid key xx from plugin src/app.ts

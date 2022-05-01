@@ -181,7 +181,7 @@ $ npm link path/to/dumi/lib
 组件 API 自动生成的前提是，确保 dumi 能够通过 TypeScript 类型定义 + 注解推导出 API 的内容，例如 `Hello` 组件的源代码：
 
 ```tsx | pure
-import React from 'react';
+import React from 'react'
 
 export interface IHelloProps {
   /**
@@ -193,9 +193,9 @@ export interface IHelloProps {
   className?: string; // 支持识别 TypeScript 可选类型为非必选属性
 }
 
-const Hello: React.FC<IHelloProps> = () => <>Hello World!</>;
+const Hello: React.FC<IHelloProps> = () => <>Hello World!</>
 
-export default Hello;
+export default Hello
 ```
 
 dumi 背后的类型解析工具是 `react-docgen-typescript`，更多类型和注解的用法可参考 [它的文档](https://github.com/styleguidist/react-docgen-typescript#example)。

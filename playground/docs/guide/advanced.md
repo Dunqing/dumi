@@ -201,7 +201,7 @@ Now, we can realize the automatic generation of component API through JS Doc ann
 The premise of automatic component API generation is to ensure that dumi can deduce the content of the API through TypeScript type definition + annotations, such as the source code of the `Hello` component:
 
 ```tsx | pure
-import React from 'react';
+import React from 'react'
 
 export interface IHelloProps {
   /**
@@ -213,9 +213,9 @@ export interface IHelloProps {
   className?: string; // Support for identifying TypeScript optional types as optional attributes
 }
 
-const Hello: React.FC<IHelloProps> = () => <>Hello World!</>;
+const Hello: React.FC<IHelloProps> = () => <>Hello World!</>
 
-export default Hello;
+export default Hello
 ```
 
 The type analysis tool dumi based is `react-docgen-typescript`.

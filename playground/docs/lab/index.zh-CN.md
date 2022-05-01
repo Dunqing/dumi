@@ -22,10 +22,10 @@ sidemenu: false
  *  - timeout:1000
  *  - click:[data-action="reset"]
  */
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 export default () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -42,8 +42,8 @@ export default () => {
         重置
       </button>
     </>
-  );
-};
+  )
+}
 ```
 
 将会得到如下 Demo，尝试点击操作栏上的播放按钮，开发者预先定义好的 `motions` 将会依次执行：
@@ -57,10 +57,10 @@ export default () => {
  *  - timeout:1000
  *  - click:[data-action="reset"]
  */
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 export default () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -77,8 +77,8 @@ export default () => {
         重置
       </button>
     </>
-  );
-};
+  )
+}
 ```
 
 目前支持如下 `motion` 语法：

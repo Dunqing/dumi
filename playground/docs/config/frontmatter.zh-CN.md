@@ -93,7 +93,6 @@ dumi 会自动为 `index.md`、`a.md`、`b.md` 指定 `group.title` 为 `Compone
 group:
   title: 组件
 ---
-
 ```
 
 则最终生成的 `group.path` 还是 `/components`，但 `group.title` 则变成了 `组件`。

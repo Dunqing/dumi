@@ -21,7 +21,7 @@ $ npm i @umijs/plugin-name -D
 export default {
   // 其他配置项
   field: {},
-};
+}
 ```
 
 ## 插件列表
@@ -41,7 +41,7 @@ export default {
     // 百度统计代码，配置后会启用
     baidu: '5a66cxxxxxxxxxx9e13',
   },
-};
+}
 ```
 
 更多信息可访问：[Umi 插件 - @umijs/plugin-analytics](https://umijs.org/zh-CN/plugins/plugin-analytics)。
@@ -59,7 +59,7 @@ export default {
     // 传递给 Dart Sass 或 Node Sass 的配置项，可以是一个 Function
     sassOptions: {},
   },
-};
+}
 ```
 
 更多信息可访问：[Umi 插件 - @umijs/plugin-sass](https://umijs.org/zh-CN/plugins/plugin-sass)。
@@ -72,7 +72,7 @@ export default {
 ```ts
 export default {
   esbuild: {}, // 启用 esbuild 压缩
-};
+}
 ```
 
 更多信息可访问：[Umi 插件 - @umijs/plugin-esbuild](https://umijs.org/zh-CN/plugins/plugin-esbuild)。
@@ -83,11 +83,11 @@ export default {
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
+import type { IApi } from 'dumi'
 
 export default (api: IApi) => {
   // 编写插件内容
-};
+}
 ```
 
 然后在 dumi 配置文件中启用它即可：
@@ -95,7 +95,7 @@ export default (api: IApi) => {
 ```ts
 export default {
   plugins: ['/path/to/plugin.ts'],
-};
+}
 ```
 
 ## 插件 API
@@ -110,15 +110,15 @@ dumi 完全使用 Umi 的插件体系，可访问 Umi 的[插件开发最佳实�
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
+import type { IApi } from 'dumi'
 
-export default async (api: IApi) => {
+export default async(api: IApi) => {
   const rootRoute = await api.applyPlugins({
     key: 'dumi.getRootRoute',
     type: api.ApplyPluginsType.modify,
     initialValue: await api.getRoutes(),
-  });
-};
+  })
+}
 ```
 
 ### `dumi.modifyAssetsMeta`
@@ -129,18 +129,18 @@ export default async (api: IApi) => {
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import IAssetsPackage from 'dumi-assets-types';
+import type { IApi } from 'dumi'
+import type IAssetsPackage from 'dumi-assets-types'
 
 export default (api: IApi) => {
   api.register({
     key: 'dumi.modifyAssetsMeta',
     fn(pkg: IAssetsPackage) {
       // 处理 pkg 并返回新的 pkg
-      return pkg;
+      return pkg
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.detectCodeBlock`
@@ -149,8 +149,8 @@ dumi 在解析 Markdown 时、如果发现了 React 代码块，则会触发此�
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import { ExampleBlockAsset } from 'dumi-assets-types';
+import type { IApi } from 'dumi'
+import type { ExampleBlockAsset } from 'dumi-assets-types'
 
 export default (api: IApi) => {
   api.register({
@@ -158,8 +158,8 @@ export default (api: IApi) => {
     fn(block: ExampleBlockAsset) {
       // 可以对 block 做统计、存储等
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.detectAtomAsset`
@@ -168,8 +168,8 @@ dumi 在解析 Markdown 时、如果检测到对应的组件资产，会触发�
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import { AtomAsset } from 'dumi-assets-types';
+import type { IApi } from 'dumi'
+import type { AtomAsset } from 'dumi-assets-types'
 
 export default (api: IApi) => {
   api.register({
@@ -177,8 +177,8 @@ export default (api: IApi) => {
     fn(atom: AtomAsset) {
       // 可以对 atom 做统计、存储等
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.detectApi`
@@ -187,7 +187,7 @@ dumi 在解析 Markdown 时，如果检测到有使用 API 自动生成，会触
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
+import type { IApi } from 'dumi'
 
 export default (api: IApi) => {
   api.register({
@@ -195,8 +195,8 @@ export default (api: IApi) => {
     fn({ identifier, data }) {
       // identifier 是 API 导出标识符，data 是 API 属性数据
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.modifyThemeResolved`
@@ -205,18 +205,18 @@ export default (api: IApi) => {
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import { IThemeLoadResult } from '@umijs/preset-dumi/lib/theme/loader';
+import type { IApi } from 'dumi'
+import type { IThemeLoadResult } from '@umijs/preset-dumi/lib/theme/loader'
 
 export default (api: IApi) => {
   api.register({
     key: 'dumi.modifyThemeResolved',
     fn(resolved: IThemeLoadResult) {
       // 修改 resolved 并返回
-      return resolved;
+      return resolved
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.registerCompiletime`
@@ -260,10 +260,10 @@ export default (api) => {
           },
           // demo 渲染器的 props，会传递给上面注册的渲染器组件
           rendererProps: { text: 'World!' },
-        };
+        }
       },
     }),
-  });
+  })
 }
 ```
 更多信息参考：[#804](https://github.com/umijs/dumi/pull/804)。

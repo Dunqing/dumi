@@ -15,7 +15,7 @@ Create a `.umirc.ts` or `config/config.ts` file in the project root directory to
 // Configuration content
 export default {
   // Configuration items
-};
+}
 ```
 
 Currently dumi supports the following configuration items.
@@ -150,7 +150,7 @@ export default {
       // Omit, the same as above
     ],
   },
-};
+}
 ```
 
 ### navs
@@ -200,7 +200,7 @@ export default {
       },
     ],
   },
-};
+}
 ```
 
 ### resolve

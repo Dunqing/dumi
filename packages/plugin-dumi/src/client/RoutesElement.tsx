@@ -1,10 +1,9 @@
-import { matchRoutes, useLocation, renderMatches } from 'react-router-dom'
+import { matchRoutes, renderMatches, useLocation } from 'react-router-dom'
 import { context } from '@dumi/theme'
-import { routes, nav } from 'virtual:dumi-provider'
+import { nav, routes } from 'virtual:dumi-provider'
 import { useCurrentLocale } from './hooks'
 
 const { Provider } = context
-
 
 const RoutesElement = () => {
   const location = useLocation()
@@ -12,17 +11,16 @@ const RoutesElement = () => {
   const element = renderMatches(matchResult)
 
   const Config = {
-    mode: "site",
+    mode: 'site',
     repository: {
       url: '',
       branch: 'main',
-      platform: 'github'
+      platform: 'github',
     },
-    locales: [['en-US', 'English'], ['zh-CN', '中文']] as [string, string][]
+    locales: [['en-US', 'English'], ['zh-CN', '中文']] as [string, string][],
   }
 
   const [locale, isDefault] = useCurrentLocale(Config.locales)
-
 
   return <Provider value={{
     config: Config,

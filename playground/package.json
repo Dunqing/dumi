@@ -8,12 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dumi/theme": "workspace:*",
+    "@dumi/theme-default": "workspace:*",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-router-dom": "^6.3.0",
-    "recast": "^0.20.5",
-    "@dumi/theme-default": "workspace:*",
-    "@dumi/theme": "workspace:*"
+    "recast": "^0.20.5"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",

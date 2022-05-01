@@ -19,9 +19,9 @@ const LocaleSelect: FC = () => {
     const pathLocaleRE = new RegExp(`^\\/${locale}`)
 
     if (target !== locales[0][0]) {
-      if (!pathLocaleRE.test(pathname)) {
+      if (!pathLocaleRE.test(pathname))
         return `/${target}${pathname}`
-      }
+
       return pathname.replace(pathLocaleRE, `/${target}`)
     }
     return pathname.replace(pathLocaleRE, '')
@@ -39,12 +39,12 @@ const LocaleSelect: FC = () => {
                 </option>
               ))}
             </select>
-          )
+            )
           : (
             <Link to={getLocaleTogglePath(firstDiffLocale[0])}>{firstDiffLocale[1]}</Link>
-          )}
+            )}
       </div>
-    )
+      )
     : null
 }
 

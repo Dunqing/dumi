@@ -21,7 +21,7 @@ If the plug-in provides configuration items, please configure in `config/config.
 export default {
   // Other configuration items
   field: {},
-};
+}
 ```
 
 ## Plugin list
@@ -43,7 +43,7 @@ export default {
     // Baidu statistics code, will be enabled after configuration
     baidu: '5a66cxxxxxxxxxx9e13',
   },
-};
+}
 ```
 
 For more information, please visit: [Umi plugin - @umijs/plugin-analytics](https://umijs.org/zh-CN/plugins/plugin-analytics).
@@ -61,7 +61,7 @@ export default {
     // The configuration item passed to Dart Sass or Node Sass can be a Function
     sassOptions: {},
   },
-};
+}
 ```
 
 For more information, please visit: [Umi plugin - @umijs/plugin-sass](https://umijs.org/zh-CN/plugins/plugin-sass).
@@ -74,7 +74,7 @@ For more information, please visit: [Umi plugin - @umijs/plugin-sass](https://um
 ```ts
 export default {
   esbuild: {}, // Enable esbuild compression
-};
+}
 ```
 
 For more information, please visit: [Umi plugin - @umijs/plugin-esbuild](https://umijs.org/zh-CN/plugins/plugin-esbuild).
@@ -85,11 +85,11 @@ If the existing plugins cannot meet the needs, or you want to customize some beh
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
+import type { IApi } from 'dumi'
 
 export default (api: IApi) => {
   // Write plugin content
-};
+}
 ```
 
 Then enable it in the dumi configuration file:
@@ -97,7 +97,7 @@ Then enable it in the dumi configuration file:
 ```ts
 export default {
   plugins: ['/path/to/plugin.ts'],
-};
+}
 ```
 
 ## Plugin API
@@ -114,15 +114,15 @@ Used to get the root route of the document part in the `routes` configuration.
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
+import type { IApi } from 'dumi'
 
-export default async (api: IApi) => {
+export default async(api: IApi) => {
   const rootRoute = await api.applyPlugins({
     key: 'dumi.getRootRoute',
     type: api.ApplyPluginsType.modify,
     initialValue: await api.getRoutes(),
-  });
-};
+  })
+}
 ```
 
 ### `dumi.modifyAssetsMeta`
@@ -137,18 +137,18 @@ You can use this method to modify the asset metadata that is finally entered int
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import IAssetsPackage from 'dumi-assets-types';
+import type { IApi } from 'dumi'
+import type IAssetsPackage from 'dumi-assets-types'
 
 export default (api: IApi) => {
   api.register({
     key: 'dumi.modifyAssetsMeta',
     fn(pkg: IAssetsPackage) {
       // Process pkg and return new pkg
-      return pkg;
+      return pkg
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.detectCodeBlock`
@@ -157,8 +157,8 @@ When dumi is parsing Markdown, if it finds a React code block, it will trigger t
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import { ExampleBlockAsset } from 'dumi-assets-types';
+import type { IApi } from 'dumi'
+import type { ExampleBlockAsset } from 'dumi-assets-types'
 
 export default (api: IApi) => {
   api.register({
@@ -166,8 +166,8 @@ export default (api: IApi) => {
     fn(block: ExampleBlockAsset) {
       // You can do statistics, storage, etc. on the block
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.detectAtomAsset`
@@ -178,8 +178,8 @@ For example, `src/Button/index.tsx` is a component asset. Calling method:
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import { AtomAsset } from 'dumi-assets-types';
+import type { IApi } from 'dumi'
+import type { AtomAsset } from 'dumi-assets-types'
 
 export default (api: IApi) => {
   api.register({
@@ -187,8 +187,8 @@ export default (api: IApi) => {
     fn(atom: AtomAsset) {
       // Statistics and storage of atom can be done
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.detectApi`
@@ -197,7 +197,7 @@ When dumi is parsing Markdown, if it detects that it is automatically generated 
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
+import type { IApi } from 'dumi'
 
 export default (api: IApi) => {
   api.register({
@@ -205,8 +205,8 @@ export default (api: IApi) => {
     fn({ identifier, data }) {
       // identifier is the API export identifier, data is the API attribute data
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.modifyThemeResolved`
@@ -215,18 +215,18 @@ Use to modify the analysis result of dumi's theme package, usually used to custo
 
 ```ts
 // /path/to/plugin.ts
-import { IApi } from 'dumi';
-import { IThemeLoadResult } from '@umijs/preset-dumi/lib/theme/loader';
+import type { IApi } from 'dumi'
+import type { IThemeLoadResult } from '@umijs/preset-dumi/lib/theme/loader'
 
 export default (api: IApi) => {
   api.register({
     key: 'dumi.modifyThemeResolved',
     fn(resolved: IThemeLoadResult) {
       // Modify resolved and return
-      return resolved;
+      return resolved
     },
-  });
-};
+  })
+}
 ```
 
 ### `dumi.registerCompiletime`
@@ -271,10 +271,10 @@ export default (api) => {
           },
           // props for demo renderer, will pass to the registered component above
           rendererProps: { text: 'World!' },
-        };
+        }
       },
     }),
-  });
+  })
 }
 ```
 More informatios: [#804](https://github.com/umijs/dumi/pull/804)。

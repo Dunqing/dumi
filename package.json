@@ -3,17 +3,17 @@
   "version": "0.2.1",
   "private": "true",
   "description": "vite-plugin-dumi",
+  "keywords": [
+    "vite",
+    "plugin",
+    "vite-plugin"
+  ],
   "license": "MIT",
   "author": "DengQing <dengqing0821@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Dunqing/vite-plugin-dumi.git"
   },
-  "keywords": [
-    "vite",
-    "plugin",
-    "vite-plugin"
-  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

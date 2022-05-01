@@ -10,26 +10,28 @@ interface Meta {
 
 const parseMeta = (meta?: string): Meta => {
   return (meta || '').split('|').reduce((m: Record<any, true>, k) => {
-    if (!k.trim()) return m
+    if (!k.trim())
+      return m
     m[k.trim()] = true
     return m
   }, {})
 }
 
-export const codeblock: Plugin<[]> = function () {
-  let codeblockIndex = 0;
+export const codeblock: Plugin<[]> = function() {
+  let codeblockIndex = 0
   const allowPreviewerLangs = ['tsx', 'jsx']
   return (root, file) => {
     return visit(root, { type: 'element', tagName: 'code' }, (node: Element, index, parent) => {
       const meta = parseMeta(node.data?.meta as string)
       const lang = (node.properties?.className as string[])?.map((name: string) => name.startsWith('language-') && name.slice(9)).filter(Boolean)?.[0]
 
-      if (!lang) return
+      if (!lang)
+        return
 
       if (meta.pure) {
         node.tagName = 'SourceCode'
         node.properties = {
-          lang: lang[0]
+          lang: lang[0],
         }
         return
       }
@@ -38,12 +40,12 @@ export const codeblock: Plugin<[]> = function () {
 
         node.properties = {
           ...node.properties,
-          src
+          src,
         }
 
         const previewers: any = (file.data.previewers || (file.data.previewers = {}))
         previewers[src] = {
-          source: toString(node)
+          source: toString(node),
         }
 
         replaceElementToPreviewer(node, parent, index)

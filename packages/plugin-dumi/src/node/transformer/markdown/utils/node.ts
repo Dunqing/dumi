@@ -1,4 +1,4 @@
-import { Parent, Element } from "hast";
+import type { Element, Parent } from 'hast'
 
 export const replaceElementToPreviewer = (node: Element, parent: Parent, index) => {
   parent.children.splice(index, 1, {

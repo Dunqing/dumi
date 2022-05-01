@@ -75,8 +75,8 @@ For example, add a feedback button to the text area:
 
 ```tsx | pure
 // .dumi/theme/layout.tsx(local theme) 或 src/layout.tsx(theme package)
-import React from 'react';
-import Layout from 'dumi-theme-default/es/layout';
+import React from 'react'
+import Layout from 'dumi-theme-default/es/layout'
 
 export default ({ children, ...props }) => (
   <Layout {...props}>
@@ -85,7 +85,7 @@ export default ({ children, ...props }) => (
       {children}
     </>
   </Layout>
-);
+)
 ```
 
 ## Development, debugging and use

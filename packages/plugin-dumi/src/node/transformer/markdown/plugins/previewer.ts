@@ -4,9 +4,8 @@ import { visit } from 'unist-util-visit'
 import type { Element, Parent } from 'hast'
 import { replaceElementToPreviewer } from '../utils/node'
 
-export const previewer: Plugin = function () {
+export const previewer: Plugin = function() {
   return (root, file) => {
-
     return visit(root, {
       type: 'element',
       tagName: 'code',

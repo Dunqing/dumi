@@ -77,9 +77,9 @@ yarn add dumi cross-env -D
 ```js
 export default {
   chainWebpack(memo) {
-    memo.plugins.delete('copy');
+    memo.plugins.delete('copy')
   },
-};
+}
 ```
 
 4. Create a new document directory `dumi/docs/`, where the `dumi` directory is the environment variable configured in the second step, you can modify it at will.
@@ -124,7 +124,7 @@ export default {
   publicPath: '/assets-files-base-path/',
   exportStatic: {}, // Export all routes as HTML directory structure to avoid 404 when refreshing the page
   // Other configuration
-};
+}
 ```
 
 > If the document project were independent, you would configure `base` and `publicPath` as same!
@@ -242,19 +242,19 @@ extraBabelPlugins: [
     {
       libraryName: 'lean',
       camel2DashComponentName: false,
-      customStyleName: name => {
-        return `./style/index.less`; // Attention: the ./ cannot be omitted in here
+      customStyleName: (name) => {
+        return `./style/index.less` // Attention: the ./ cannot be omitted in here
       },
     },
     'lean',
   ],
-];
+]
 ```
 
 Import component in md:
 
 ```tsx | pure
-import { Button } from 'lean'; // load-on-demand styles here
+import { Button } from 'lean' // load-on-demand styles here
 ```
 
 ## How does dumi support to highlight for languages such as Swift, C#, Kotlin?
@@ -267,10 +267,10 @@ We can add support for other languages in dumi in the following ways:
 // src/app.ts
 import Prism from 'prism-react-renderer/prism';
 
-(typeof global !== 'undefined' ? global : window).Prism = Prism;
+(typeof global !== 'undefined' ? global : window).Prism = Prism
 
-require('prismjs/components/prism-kotlin');
-require('prismjs/components/prism-csharp');
+require('prismjs/components/prism-kotlin')
+require('prismjs/components/prism-csharp')
 ```
 
 ## Use dumi in non-Umi project then got Error: register failed, invalid key xx from plugin src/app.ts

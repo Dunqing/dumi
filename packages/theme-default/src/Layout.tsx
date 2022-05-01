@@ -33,10 +33,10 @@ const Features = features => (
             <Link to={feat.link}>
               <dt>{feat.title}</dt>
             </Link>
-          )
+            )
           : (
             <dt>{feat.title}</dt>
-          )}
+            )}
         <dd dangerouslySetInnerHTML={{ __html: feat.desc }} />
       </dl>
     ))}
@@ -69,7 +69,7 @@ const Layout: React.FC<any> = ({ children }) => {
   const updatedTime: any = `${updatedTimeIns.toLocaleDateString([], { hour12: false })} ${updatedTimeIns.toLocaleTimeString([], { hour12: false })}`
   const repoPlatform
     = { github: 'GitHub', gitlab: 'GitLab' }[
-    (repoUrl || '').match(/(github|gitlab)/)?.[1] || 'nothing'
+      (repoUrl || '').match(/(github|gitlab)/)?.[1] || 'nothing'
     ] || platform
 
   return (
