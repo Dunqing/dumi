@@ -1,6 +1,6 @@
 import type { Loader } from 'esbuild'
 import type { VFile } from 'vfile'
-import { analyzeDeps, exportDefaultToConst, exportDefaultToReturn } from '../parser'
+import { analyzeDeps, exportDefaultToConst } from '../parser'
 import type { ResolveFunction } from '../types'
 import { getFilenameExt } from '../utils'
 
@@ -79,11 +79,7 @@ export const renderPage = async(source: VFile, resolve: ResolveFunction) => {
     }
 
     export default function markdown() {
-      return <Layout meta={${JSON.stringify(source.data)}}>
-        <div className="markdown">
-          ${source}
-        </div>
-      </Layout>
+      ${source}
     }
   `
 }
