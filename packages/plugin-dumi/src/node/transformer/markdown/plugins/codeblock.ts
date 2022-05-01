@@ -17,7 +17,7 @@ const parseMeta = (meta?: string): Meta => {
   }, {})
 }
 
-export const codeblock: Plugin<[]> = function() {
+export const codeblock: Plugin<[]> = function () {
   let codeblockIndex = 0
   const allowPreviewerLangs = ['tsx', 'jsx']
   return (root, file) => {
@@ -31,7 +31,7 @@ export const codeblock: Plugin<[]> = function() {
       if (meta.pure) {
         node.tagName = 'SourceCode'
         node.properties = {
-          lang: lang[0],
+          lang,
         }
         return
       }
