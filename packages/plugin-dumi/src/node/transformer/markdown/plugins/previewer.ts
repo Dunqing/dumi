@@ -1,15 +1,16 @@
 import path from 'path'
 import type { Plugin } from 'unified'
+import type { Visitor } from 'unist-util-visit/complex-types'
 import { visit } from 'unist-util-visit'
-import type { Element, Parent } from 'hast'
+import type { Element } from 'hast'
 import { replaceElementToPreviewer } from '../utils/node'
 
-export const previewer: Plugin = function() {
-  return (root, file) => {
-    return visit(root, {
+export const previewer: Plugin<[], Element> = function() {
+  return async(root, file, next) => {
+    visit(root, {
       type: 'element',
       tagName: 'code',
-    }, (node: Element, index: number, parent: Parent) => {
+    }, (node, index, parent) => {
       const src = node.properties?.src as string
       if (!src)
         return
@@ -27,7 +28,9 @@ export const previewer: Plugin = function() {
         return
       }
 
-      replaceElementToPreviewer(node, parent, index)
+      replaceElementToPreviewer([node, index, parent])
     })
+
+    next(null, root)
   }
 }

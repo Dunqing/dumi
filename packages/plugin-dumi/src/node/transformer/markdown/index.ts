@@ -24,7 +24,9 @@ const processor = unified()
   .use(jsx)
   .use(wrapper)
 
-export const transformMarkdown = (file: VFile, resolve: ResolveFunction) => {
-  const mFile = processor.processSync(file)
+export const transformMarkdown = async(file: VFile, resolve: ResolveFunction) => {
+  file.data.resolve = resolve
+  const mFile = await processor.process(file)
+
   return generatePage(mFile, resolve)
 }

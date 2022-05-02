@@ -17,7 +17,7 @@ const parseMeta = (meta?: string): Meta => {
   }, {})
 }
 
-export const codeblock: Plugin<[]> = function () {
+export const codeblock: Plugin<[]> = function() {
   let codeblockIndex = 0
   const allowPreviewerLangs = ['tsx', 'jsx']
   return (root, file) => {
@@ -48,7 +48,7 @@ export const codeblock: Plugin<[]> = function () {
           source: toString(node),
         }
 
-        replaceElementToPreviewer(node, parent, index)
+        replaceElementToPreviewer([node, index, parent])
       }
     })
   }
