@@ -25,7 +25,7 @@ export const loadMarkdowns = async(root: string, resolve: ResolveFunction) => {
 
   for (let i = 0; i < paths.length; i++) {
     const markdown = paths[i]
-    const file = await transform(markdown.id, resolve)
+    const file = await transform(markdown.path, resolve)
     transformResults.push({
       ...markdown,
       meta: file.data as unknown as MetaData,

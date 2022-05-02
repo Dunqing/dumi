@@ -6,8 +6,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import type { VFile } from 'vfile'
 import type { ResolveFunction } from '../types'
-import { codeblock, embed, jsx, link, meta, previewer, slug, wrapper } from './plugins'
-import { generatePage } from './page'
+import { codeblock, embed, jsx, link, meta, page, previewer, slug } from './plugins'
 
 const processor = unified()
   .use(remarkFrontmatter)
@@ -22,11 +21,11 @@ const processor = unified()
   .use(embed)
   .use(previewer)
   .use(jsx)
-  .use(wrapper)
+  .use(page)
 
 export const transformMarkdown = async(file: VFile, resolve: ResolveFunction) => {
   file.data.resolve = resolve
   const mFile = await processor.process(file)
 
-  return generatePage(mFile, resolve)
+  return mFile.value
 }

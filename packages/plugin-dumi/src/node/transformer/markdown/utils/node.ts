@@ -1,7 +1,7 @@
 import type { Element } from 'hast'
 import type { Visitor } from 'unist-util-visit/complex-types'
 
-export const replaceElementToPreviewer = ([node, index, parent]: Parameters<Visitor<Element, Element>>) => {
+export const replaceElementToPreviewer = ([node, index, parent]: Parameters<Visitor<Element, Element>>, codeComponentProperties) => {
   parent!.children.splice(index!, 1, {
     type: 'element',
     tagName: 'Previewer',
@@ -13,9 +13,7 @@ export const replaceElementToPreviewer = ([node, index, parent]: Parameters<Visi
       {
         type: 'element',
         tagName: 'CodeComponent',
-        properties: {
-          src: node.properties?.src,
-        },
+        properties: codeComponentProperties,
         children: [],
       },
     ],
