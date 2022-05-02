@@ -1,6 +1,5 @@
 import path from 'path'
 import type { Plugin } from 'unified'
-import type { Visitor } from 'unist-util-visit/complex-types'
 import { visit } from 'unist-util-visit'
 import type { Element } from 'hast'
 import { replaceElementToPreviewer } from '../utils/node'

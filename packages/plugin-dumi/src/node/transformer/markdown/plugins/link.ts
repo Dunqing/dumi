@@ -1,4 +1,3 @@
-import { URL } from 'url'
 import type { Plugin } from 'unified'
 import { visit } from 'unist-util-visit'
 import { hasProperty } from 'hast-util-has-property'
