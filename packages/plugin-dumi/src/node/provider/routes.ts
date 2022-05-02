@@ -1,39 +1,4 @@
-import type { ResolvedConfig } from 'vite'
-import { transformSync } from 'esbuild'
-import type { ResolveFunction } from '../transformer'
-import { transform } from '../transformer'
-import { detectMarkdowns } from './markdown'
-
-interface MetaData {
-  group?: {
-    path?: string
-    title?: string
-    order?: number
-  }
-  nav?: {
-    path?: string
-    title?: string
-    order?: number
-  }
-  slugs: any[]
-}
-
-export const loadMarkdowns = async(root: string, resolve: ResolveFunction) => {
-  const paths = detectMarkdowns(root)
-
-  const transformResults = []
-
-  for (let i = 0; i < paths.length; i++) {
-    const markdown = paths[i]
-    const file = await transform(markdown.path, resolve)
-    transformResults.push({
-      ...markdown,
-      meta: file.data as unknown as MetaData,
-    })
-  }
-
-  return transformResults
-}
+import type { loadMarkdowns } from './markdown'
 
 type PickPromiseType<T> = T extends Promise<infer U> ? U : T
 type SourcesType = PickPromiseType<ReturnType<typeof loadMarkdowns>>
@@ -122,43 +87,4 @@ export const generateNav = () => {
 
     export const nav = generateNav()
   `
-}
-
-export const dumiProvider = async(config: ResolvedConfig, resolve: ResolveFunction) => {
-  const Sources = await loadMarkdowns(config.root, resolve)
-  const locales = [['en-US', 'English'], ['zh-CN', '中文']].map(i => i[0])
-
-  const code = `
-    import React, { lazy } from 'react'
-
-    const Sources = ${JSON.stringify(Sources)}
-    const locales = ${JSON.stringify(locales)}
-
-    export const parsedPath = (item: any) => {
-    const firstLocale = locales[0]
-    const localesRE = new RegExp('\\\\.(${locales.join('|')})$')
-    const routePathRE = new RegExp("(docs|src)([\\\\/\\\\w\\\\d\\\\-_\\\\.]+)?.md");
-
-    const routePath = routePathRE.exec(item.id)![2]
-    let paths = routePath.split('/')
-    const namePath = paths[paths.length - 1]
-    paths = paths.slice(0, -1)
-    const metaPath = (item.meta.nav?.path || '') + (item.meta.group?.path || '')
-    paths = metaPath ? paths.splice(0, paths.length - 2, ...metaPath.split('/')) : paths
-
-    const locale = localesRE.exec(namePath)?.[1]
-    if (locale && locale !== firstLocale) {
-      paths.splice(0, 1, '/' + locale)
-    }
-    paths.push(namePath.replace(localesRE, ''))
-
-    return { paths, locale: locale || firstLocale }
-  }
-    ${await generateRoutes(Sources)}
-    ${await generateNav()}
-  `
-
-  return transformSync(code, {
-    loader: 'tsx',
-  })
 }
