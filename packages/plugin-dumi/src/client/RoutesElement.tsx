@@ -2,6 +2,7 @@ import { matchRoutes, renderMatches, useLocation } from 'react-router-dom'
 import { context } from '@dumi/theme'
 import { nav, routes } from 'virtual:dumi-provider'
 import { useCurrentLocale } from './hooks'
+import { sortable } from './utils'
 
 const { Provider } = context
 
@@ -25,11 +26,11 @@ const RoutesElement = () => {
   return <Provider value={{
     config: Config,
     routes,
-    nav: nav[locale],
+    nav: sortable(nav[locale]),
     base: `/${isDefault ? '' : locale}`,
     locale,
     meta: matchResult?.[matchResult.length - 1].route.meta,
-    menu: matchResult?.[matchResult.length - 2].route.children,
+    menu: sortable(matchResult?.[matchResult.length - 2].route.children),
   }}>{element}</Provider>
 }
 
