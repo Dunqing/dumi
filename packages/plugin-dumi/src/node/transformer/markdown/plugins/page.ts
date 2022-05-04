@@ -7,6 +7,7 @@ import { exportDefaultToConst } from '../../parser'
 
 const replaceCodeComponent = (ast: EstreeProgram) => {
   let index = 0
+  const dependencies: Statement[] = []
   traverse(ast as any, {
     JSXOpeningElement(path) {
       if (isJSXIdentifier(path.node.name)) {
@@ -31,33 +32,37 @@ const replaceCodeComponent = (ast: EstreeProgram) => {
               ) as Statement,
             )
 
-            ast.body.push(
-              template.ast(
+            dependencies.push(
+              ...[template.ast(
                 source
                   ? `${exportDefaultToConst(source, 'tsx', name)}`
                   : `import ${name} from ${JSON.stringify(src)}`,
-              ) as any,
+              )].flat(1),
             )
           }
         }
       }
     },
   })
+
+  return dependencies
 }
 
 export const page: Plugin<[], EstreeProgram> = function() {
   return (ast, file) => {
-    replaceCodeComponent(ast)
+    const dependencies = replaceCodeComponent(ast)
 
     return template.program(`
       import React, { lazy, useCallback } from 'react';
       import { AnchorLink } from '@dumi/theme'
       import { Previewer as ThemePreviewer, Layout, SourceCode } from '@dumi/theme-default'
 
+      %%DEPENDENCIES%%
+
       const additionalPreviewerProps = ${JSON.stringify(file.data.additionalPreviewerProps)}
 
       const Previewer = (props) => {
-        return <ThemePreviewer {...props} {...additionalPreviewerProps[props.src]} />
+        return <ThemePreviewer {...props} {...Reflect.get(additionalPreviewerProps, props.src)} />
       }
 
       const children = %%CHILDREN%%;
@@ -74,6 +79,7 @@ export const page: Plugin<[], EstreeProgram> = function() {
       plugins: ['jsx'],
     })({
       CHILDREN: (ast.body[0] as any as ExpressionStatement).expression,
+      DEPENDENCIES: dependencies,
     }) as any
   }
 }

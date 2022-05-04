@@ -28,11 +28,10 @@ export const previewer: Plugin<[], Element> = function() {
     })
 
     await pEachSeries(nodes, async([node, index, parent]) => {
-      let src = node.properties!.src as string
-      src = path.posix.join(file.dirname!, src)
+      const src = node.properties!.src as string
 
       const deps = await analyzeDeps({
-        path: src,
+        path: path.posix.join(file.dirname!, src),
         resolve: (file.data.resolve) as any,
         importer: file.path,
       });
