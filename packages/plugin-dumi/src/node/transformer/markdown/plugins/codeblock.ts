@@ -3,6 +3,7 @@ import { toString } from 'hast-util-to-string'
 import pEachSeries from 'p-each-series'
 import type { Plugin } from 'unified'
 import type { Visitor } from 'unist-util-visit/complex-types'
+import { is } from 'unist-util-is'
 import { visit } from 'unist-util-visit'
 import { analyzeDeps } from '../../parser'
 import { replaceElementToPreviewer } from '../utils/node'
@@ -20,28 +21,20 @@ const parseMeta = (meta?: string): Meta => {
   }, {})
 }
 
-export const codeblock: Plugin<[]> = function() {
+export const codeblock: Plugin<[], Element> = function() {
   const allowPreviewerLangs = ['tsx', 'jsx']
   return async(root, file, next) => {
     const nodes: Parameters<Visitor<Element, Element>>[] = []
     let codeblockIndex = 0
 
-    visit(root, { type: 'element', tagName: 'code' }, (node: Element, index, parent) => {
-      const meta = parseMeta(node.data?.meta as string)
+    visit(root, { type: 'element', tagName: 'code' }, (node, index, parent) => {
+      const meta = { ...parseMeta(node.data?.meta as string), ...node.data }
       const lang = (node.properties?.className as string[])?.map((name: string) => name.startsWith('language-') && name.slice(9)).filter(Boolean)?.[0]
 
       if (!lang)
         return
 
-      if (meta.pure) {
-        node.tagName = 'SourceCode'
-        node.properties = {
-          lang,
-        }
-        return
-      }
-
-      if (allowPreviewerLangs.includes(lang)) {
+      if (!meta.pure && allowPreviewerLangs.includes(lang)) {
         const src = `codeblockPreviewer${++codeblockIndex}.${lang}`
 
         node.properties = {
@@ -50,6 +43,14 @@ export const codeblock: Plugin<[]> = function() {
         }
 
         nodes.push([node, index, parent])
+      }
+      else {
+        node.tagName = 'SourceCode'
+        node.properties = {
+          lang,
+        }
+        if (is(parent, { type: 'element', tagName: 'pre' }))
+          Object.assign(parent, node)
       }
     })
 

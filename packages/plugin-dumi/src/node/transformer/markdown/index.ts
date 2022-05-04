@@ -6,7 +6,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import type { VFile } from 'vfile'
 import type { ResolveFunction } from '../types'
-import { codeblock, embed, jsx, link, meta, page, previewer, slug } from './plugins'
+import { codeblock, debug, embed, jsx, link, meta, page, pre, previewer, slug } from './plugins'
 
 const processor = unified()
   .use(remarkFrontmatter)
@@ -14,6 +14,8 @@ const processor = unified()
   .use(remarkParse)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw, { passThrough: ['element'] })
+  .use(pre)
+  .use(debug)
   .use(codeblock)
   .use(slug)
   .use(rehypeAutolinkHeadings)
