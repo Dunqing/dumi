@@ -18,10 +18,10 @@ export default function plugin({
 }: PluginOptions = {}): Plugin {
   createFilter(include, exclude)
 
-  const entryPath = path.resolve(
-    path.dirname(import.meta.url.replace('file:///', '')),
-    '..',
-    'src',
+  const { pathname } = new URL(import.meta.url)
+  const entryPath = path.posix.join(
+    path.dirname(pathname),
+    '../src',
     './client/index.tsx'
   )
 
