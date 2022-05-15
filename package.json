@@ -32,6 +32,7 @@
     "dev": "pnpm run --filter {packages/*} --parallel dev",
     "build": "pnpm run --filter {packages/*} build",
     "play": "pnpm run --filter playground dev",
+    "play:build": "pnpm run --filter playground build",
     "prepublishOnly": "pnpm run build",
     "test": "vitest",
     "release": "bumpp --commit --push --tag && pnpm publish",
