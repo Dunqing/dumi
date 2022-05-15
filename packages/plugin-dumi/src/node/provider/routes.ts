@@ -1,7 +1,10 @@
-import type { loadMarkdowns } from './markdown'
+import type { MetaData } from './markdown'
 
-type PickPromiseType<T> = T extends Promise<infer U> ? U : T
-type SourcesType = PickPromiseType<ReturnType<typeof loadMarkdowns>>
+type SourcesType = {
+  meta: MetaData
+  id: string
+  path: string
+}[]
 
 export const generateRoutes = (Sources: SourcesType) => {
   return `

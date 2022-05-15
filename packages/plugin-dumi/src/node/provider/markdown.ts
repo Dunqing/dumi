@@ -4,7 +4,7 @@ import glob from 'fast-glob'
 import type { ResolveFunction } from '../transformer'
 import { transform } from '../transformer'
 
-interface MetaData {
+export interface MetaData {
   group?: {
     path?: string
     title?: string
