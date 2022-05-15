@@ -45,7 +45,7 @@ export default function plugin({
           code: `
             import ${JSON.stringify(entryPath)}
           `,
-          moduleSideEffects: false,
+          moduleSideEffects: 'no-treeshake',
         }
       }
 
@@ -68,18 +68,17 @@ export default function plugin({
       enforce: 'pre',
       transform: () => [
         {
-          tag: 'script',
+          tag: 'div',
           injectTo: 'body-prepend',
           attrs: {
-            type: 'module',
-            src: MARKDOWN_ENTRY,
+            id: 'docs',
           },
         },
         {
-          tag: 'div',
-          injectTo: 'body',
+          tag: 'script',
           attrs: {
-            id: 'docs',
+            type: 'module',
+            src: MARKDOWN_ENTRY,
           },
         },
       ],
