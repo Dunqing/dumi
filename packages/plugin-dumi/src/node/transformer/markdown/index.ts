@@ -3,6 +3,7 @@ import remarkParse from 'remark-parse'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import type { VFile } from 'vfile'
 import type { ResolveFunction } from '../types'
@@ -23,6 +24,7 @@ const processor = unified()
   .use(remarkFrontmatter)
   .use(meta)
   .use(remarkParse)
+  .use(remarkGfm)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw, { passThrough: ['element'] })
   .use(pre)
