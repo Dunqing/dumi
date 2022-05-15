@@ -210,7 +210,7 @@ export interface IHelloProps {
    * @description.zh-CN  Also supports different locale suffixes to achieve multi-language description, use description as default
    * @default            Support for defining default values
    */
-  className?: string; // Support for identifying TypeScript optional types as optional attributes
+  className?: string // Support for identifying TypeScript optional types as optional attributes
 }
 
 const Hello: React.FC<IHelloProps> = () => <>Hello World!</>

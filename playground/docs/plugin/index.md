@@ -116,7 +116,7 @@ Used to get the root route of the document part in the `routes` configuration.
 // /path/to/plugin.ts
 import type { IApi } from 'dumi'
 
-export default async(api: IApi) => {
+export default async (api: IApi) => {
   const rootRoute = await api.applyPlugins({
     key: 'dumi.getRootRoute',
     type: api.ApplyPluginsType.modify,
@@ -254,7 +254,7 @@ export default (api) => {
         //   mdAbsPath: string,            file absolute path of current Markdown file
         //   node: mdASTNode,              demo mdAST node
         // }
-        opts,
+        opts
       ) => {
         // implementation...
 

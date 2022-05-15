@@ -4,11 +4,10 @@ import { hasProperty } from 'hast-util-has-property'
 import { parsePath } from 'react-router-dom'
 import type { Element } from 'hast'
 
-export const link: Plugin = function() {
-  return function(tree) {
+export const link: Plugin = function () {
+  return function (tree) {
     return visit(tree, { tagName: 'a', type: 'element' }, (node: Element) => {
-      if (!hasProperty(node, 'href'))
-        return
+      if (!hasProperty(node, 'href')) return
 
       const url = parsePath(node.properties!.href as string)
       if (url.hash) {

@@ -17,7 +17,10 @@ const collectSources = (ast: Node) => {
         temp.add(path.node.source.value)
       },
       CallExpression(path) {
-        if (isIdentifier(path.node.callee) && path.node.callee.name === 'require') {
+        if (
+          isIdentifier(path.node.callee) &&
+          path.node.callee.name === 'require'
+        ) {
           if (isStringLiteral(path.node.arguments[0]))
             temp.add(path.node.arguments[0].value)
         }
@@ -39,23 +42,27 @@ interface AnalyzeDepsOptions {
   resolve: ResolveFunction
 }
 
-export const analyzeDeps = async({ resolve, ...options }: AnalyzeDepsOptions) => {
+export const analyzeDeps = async ({
+  resolve,
+  ...options
+}: AnalyzeDepsOptions) => {
   const dependencies = new Set<string>()
 
-  const traverseFiles = async({ path, source, importer }: Omit<AnalyzeDepsOptions, 'resolve'>) => {
-    if (path && !allowExt.test(path))
-      return
+  const traverseFiles = async ({
+    path,
+    source,
+    importer,
+  }: Omit<AnalyzeDepsOptions, 'resolve'>) => {
+    if (path && !allowExt.test(path)) return
 
     let filesMap: Record<string, string> = {}
     const sources = collectSources(path ? parseFile(path) : parseCode(source!))
 
-    const checkSource = async(id: string) => {
+    const checkSource = async (id: string) => {
       const resolved = await resolve(id, path || importer)
       if (resolved) {
-        if (resolved.id.includes('node_modules'))
-          return dependencies.add(id)
-        if (isRelativeRE.test(id))
-          filesMap[id] = resolved.id
+        if (resolved.id.includes('node_modules')) return dependencies.add(id)
+        if (isRelativeRE.test(id)) filesMap[id] = resolved.id
       }
     }
 
@@ -76,7 +83,7 @@ export const analyzeDeps = async({ resolve, ...options }: AnalyzeDepsOptions) =>
     return filesMap
   }
 
-  const filesMap = await traverseFiles(options) || {}
+  const filesMap = (await traverseFiles(options)) || {}
   const sources = Object.keys(filesMap).reduce((res, key) => {
     const path = filesMap[key]
     const fileName = key.includes('.') ? key : `${key}.${getFilenameExt(path)}`
@@ -93,7 +100,9 @@ export const analyzeDeps = async({ resolve, ...options }: AnalyzeDepsOptions) =>
     sources: {
       [`index.${options.path ? getFilenameExt(options.path) : options.lang}`]: {
         lang: options.lang,
-        content: options.path ? readFileSync(options.path).toString() : options.source,
+        content: options.path
+          ? readFileSync(options.path).toString()
+          : options.source,
       },
       ...sources,
     },

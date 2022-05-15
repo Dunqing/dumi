@@ -18,13 +18,14 @@ const anchorWatcher = new (class {
   private _matchActiveAnchor() {
     // find the first element which close the top of viewport
     const closestElmIndex = this.anchors.findIndex(
-      (elm, i) => elm.getBoundingClientRect().top > 128 || i === this.anchors.length - 1,
+      (elm, i) =>
+        elm.getBoundingClientRect().top > 128 || i === this.anchors.length - 1
     )
     const currentElm = this.anchors[Math.max(0, closestElmIndex - 1)]
     const anchorVal = currentElm.parentElement.id
 
     // trigger listeners
-    this.listeners.forEach(fn => fn(anchorVal))
+    this.listeners.forEach((fn) => fn(anchorVal))
   }
 
   /**
@@ -46,8 +47,8 @@ const anchorWatcher = new (class {
    */
   unwatch(elm: HTMLAnchorElement) {
     this.anchors.splice(
-      this.anchors.findIndex(anchor => anchor === elm),
-      1,
+      this.anchors.findIndex((anchor) => anchor === elm),
+      1
     )
 
     if (this.anchors.length === 0 && typeof window !== 'undefined')
@@ -68,19 +69,24 @@ const anchorWatcher = new (class {
    */
   unlisten(fn: (anchorVal: string) => void) {
     this.listeners.splice(
-      this.listeners.findIndex(f => f === fn),
-      1,
+      this.listeners.findIndex((f) => f === fn),
+      1
     )
   }
 })()
 
 function getElmScrollPosition(elm: HTMLElement) {
   return (
-    elm.offsetTop + (elm.offsetParent ? getElmScrollPosition(elm.offsetParent as HTMLElement) : 0)
+    elm.offsetTop +
+    (elm.offsetParent
+      ? getElmScrollPosition(elm.offsetParent as HTMLElement)
+      : 0)
   )
 }
 
-const AnchorLink: React.FC<NavLinkProps> & { scrollToAnchor: (anchor: string) => void } = (props) => {
+const AnchorLink: React.FC<NavLinkProps> & {
+  scrollToAnchor: (anchor: string) => void
+} = (props) => {
   const hash = (props.to as string).match(/(#[^&?]*)/)?.[1] || ''
   const ref = useRef<HTMLAnchorElement>(null)
   const [isActive, setIsActive] = useState(false)
@@ -88,8 +94,8 @@ const AnchorLink: React.FC<NavLinkProps> & { scrollToAnchor: (anchor: string) =>
   useEffect(() => {
     if (
       // only collect 3-levels title anchors, see also: SlugList.tsx
-      ['H1', 'H2', 'H3'].includes(ref.current?.parentElement?.tagName)
-      && ref.current.parentElement.id
+      ['H1', 'H2', 'H3'].includes(ref.current?.parentElement?.tagName) &&
+      ref.current.parentElement.id
     ) {
       // only listen anchors within content area, mark by tranformer/remark/link.ts
       const elm = ref.current

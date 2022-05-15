@@ -18,20 +18,29 @@ const RoutesElement = () => {
       branch: 'main',
       platform: 'github',
     },
-    locales: [['en-US', 'English'], ['zh-CN', '中文']] as [string, string][],
+    locales: [
+      ['en-US', 'English'],
+      ['zh-CN', '中文'],
+    ] as [string, string][],
   }
 
   const [locale, isDefault] = useCurrentLocale(Config.locales)
 
-  return <Provider value={{
-    config: Config,
-    routes,
-    nav: sortable(nav[locale]),
-    base: `/${isDefault ? '' : locale}`,
-    locale,
-    meta: matchResult?.[matchResult.length - 1].route.meta,
-    menu: sortable(matchResult?.[matchResult.length - 2].route.children),
-  }}>{element}</Provider>
+  return (
+    <Provider
+      value={{
+        config: Config,
+        routes,
+        nav: sortable(nav[locale]),
+        base: `/${isDefault ? '' : locale}`,
+        locale,
+        meta: matchResult?.[matchResult.length - 1].route.meta,
+        menu: sortable(matchResult?.[matchResult.length - 2].route.children),
+      }}
+    >
+      {element}
+    </Provider>
+  )
 }
 
 export default RoutesElement

@@ -78,7 +78,9 @@ function detectInstalledTheme() {
   const pkg = ctx.umi.pkg || {}
   const deps = Object.assign({}, pkg.devDependencies, pkg.dependencies)
 
-  return Object.keys(deps).find(name => name.replace(/^@[\w-]+\//, '').startsWith(THEME_PREFIX))
+  return Object.keys(deps).find((name) =>
+    name.replace(/^@[\w-]+\//, '').startsWith(THEME_PREFIX)
+  )
 }
 
 /**
@@ -97,7 +99,11 @@ function detectTheme() {
   const localTheme = detectLocalTheme()
   const installedTheme = detectInstalledTheme()
 
-  return [localTheme, process.env.DUMI_THEME || installedTheme, FALLBACK_THEME].filter(Boolean)
+  return [
+    localTheme,
+    process.env.DUMI_THEME || installedTheme,
+    FALLBACK_THEME,
+  ].filter(Boolean)
 }
 
 /**
@@ -113,9 +119,14 @@ function getThemeResolvePaths(sourcePath: string) {
   // search compiled module in es/lib instead of src firstly, for compatible with mfsu
   if (srcRegExp.test(sourcePath)) {
     try {
-      compiledModulePaths = getThemeResolvePaths(sourcePath.replace(srcRegExp, '/es/$1')) || /* istanbul ignore next */ getThemeResolvePaths(sourcePath.replace(srcRegExp, '/lib/$1'))
+      compiledModulePaths =
+        getThemeResolvePaths(sourcePath.replace(srcRegExp, '/es/$1')) ||
+        /* istanbul ignore next */ getThemeResolvePaths(
+          sourcePath.replace(srcRegExp, '/lib/$1')
+        )
+    } catch (err) {
+      /* nothing */
     }
-    catch (err) { /* nothing */ }
   }
 
   return compiledModulePaths
@@ -135,7 +146,9 @@ function getThemeResolvePaths(sourcePath: string) {
  * @param args paths
  */
 function pathJoin(...args: string[]) {
-  return winPath(`${args[0].match(/^\.[\/\\]/)?.[0] || ''}${path.join(...args)}`)
+  return winPath(
+    `${args[0].match(/^\.[\/\\]/)?.[0] || ''}${path.join(...args)}`
+  )
 }
 
 /**
@@ -143,48 +156,58 @@ function pathJoin(...args: string[]) {
  * @param modulePath  theme package path
  */
 function getThemeEntryDir(modulePath: string) {
-  const dirs = [pathJoin(modulePath, 'es'), pathJoin(modulePath, 'lib'), pathJoin(modulePath, 'src')]
+  const dirs = [
+    pathJoin(modulePath, 'es'),
+    pathJoin(modulePath, 'lib'),
+    pathJoin(modulePath, 'src'),
+  ]
 
-  return dirs.find(dir => fs.existsSync(dir))
+  return dirs.find((dir) => fs.existsSync(dir))
 }
 
-export default async() => {
+export default async () => {
   if (!cache || process.env.NODE_ENV === 'test') {
     const [theme, fb = FALLBACK_THEME] = detectTheme()
-    const fallback = fb.startsWith('.') ? winPath(path.dirname(getThemeResolvePaths(fb).resolved)) : fb
+    const fallback = fb.startsWith('.')
+      ? winPath(path.dirname(getThemeResolvePaths(fb).resolved))
+      : fb
     const modulePath = path.isAbsolute(theme)
       ? theme
       : // resolve real absolute path for theme package
-      winPath(path.dirname(getThemeResolvePaths(theme).resolved))
+        winPath(path.dirname(getThemeResolvePaths(theme).resolved))
     // local theme has no src directory but theme package has
-    const entryDir = path.isAbsolute(theme) ? theme : getThemeEntryDir(modulePath)
+    const entryDir = path.isAbsolute(theme)
+      ? theme
+      : getThemeEntryDir(modulePath)
     const builtinPath = pathJoin(entryDir, 'builtins')
 
     debug('theme:', theme, 'fallback:', fallback)
 
     const components = fs.existsSync(builtinPath)
       ? fs
-        .readdirSync(builtinPath)
-        .filter((file) => {
-          const absPath = path.join(builtinPath, file)
-          // filter .js/.ts/.jsx/.tsx, and exclude .d.ts
-          const isFileComponent = /((?<!\.d)\.ts|\.(jsx?|tsx))$/.test(file)
-          // filter Foo/index.(tsx|jsx|js|ts)
-          const isDirComponent
-              = fs.lstatSync(absPath).isDirectory()
-              && fs.readdirSync(absPath).some(item => /^index.(t|j)sx?$/.test(item))
+          .readdirSync(builtinPath)
+          .filter((file) => {
+            const absPath = path.join(builtinPath, file)
+            // filter .js/.ts/.jsx/.tsx, and exclude .d.ts
+            const isFileComponent = /((?<!\.d)\.ts|\.(jsx?|tsx))$/.test(file)
+            // filter Foo/index.(tsx|jsx|js|ts)
+            const isDirComponent =
+              fs.lstatSync(absPath).isDirectory() &&
+              fs
+                .readdirSync(absPath)
+                .some((item) => /^index.(t|j)sx?$/.test(item))
 
-          return isFileComponent || isDirComponent
-        })
-        .map(file => ({
-          identifier: path.parse(file).name,
-          source: theme.startsWith('.')
-            ? // use abs path for relative theme folder
-            pathJoin(builtinPath, file)
-            : // still use module identifier rather than abs path for theme package and absolute theme folder
-            pathJoin(theme, builtinPath.replace(modulePath, ''), file),
-          modulePath: pathJoin(builtinPath, file),
-        }))
+            return isFileComponent || isDirComponent
+          })
+          .map((file) => ({
+            identifier: path.parse(file).name,
+            source: theme.startsWith('.')
+              ? // use abs path for relative theme folder
+                pathJoin(builtinPath, file)
+              : // still use module identifier rather than abs path for theme package and absolute theme folder
+                pathJoin(theme, builtinPath.replace(modulePath, ''), file),
+            modulePath: pathJoin(builtinPath, file),
+          }))
       : []
     const fallbacks = REQUIRED_THEME_BUILTINS.reduce((result, bName) => {
       if (components.every(({ identifier }) => identifier !== bName)) {
@@ -192,14 +215,15 @@ export default async() => {
         let cModulePath: string
 
         try {
-          cSource = pathJoin(fallback, 'src', 'builtins', `${bName}`);
-          ({ resolved: cModulePath, source: cSource } = getThemeResolvePaths(cSource))
-        }
-        catch (err) {
+          cSource = pathJoin(fallback, 'src', 'builtins', `${bName}`)
+          ;({ resolved: cModulePath, source: cSource } =
+            getThemeResolvePaths(cSource))
+        } catch (err) {
           debug('fallback to default theme for:', cSource)
           // fallback to default theme if detected fallback theme missed some components
-          cSource = pathJoin(FALLBACK_THEME, 'src', 'builtins', `${bName}`);
-          ({ resolved: cModulePath, source: cSource } = getThemeResolvePaths(cSource))
+          cSource = pathJoin(FALLBACK_THEME, 'src', 'builtins', `${bName}`)
+          ;({ resolved: cModulePath, source: cSource } =
+            getThemeResolvePaths(cSource))
         }
 
         result.push({
@@ -211,10 +235,10 @@ export default async() => {
 
       return result
     }, [])
-    const layoutPaths = {} as IThemeLoadResult['layoutPaths'];
+    const layoutPaths = {} as IThemeLoadResult['layoutPaths']
 
     // outer layout: layout.tsx or layouts/index.tsx
-    [
+    ;[
       pathJoin(entryDir, 'layout'),
       pathJoin(entryDir, 'layouts'),
       pathJoin(fallback, 'src', 'layout'),
@@ -224,27 +248,28 @@ export default async() => {
         layoutPaths._ = getThemeResolvePaths(layoutPath).resolved
 
         return true
-      }
-      catch (err) {
+      } catch (err) {
         // fallback to default theme layout if cannot find any valid layout
         if (i === outerLayoutPaths.length - 1)
-          layoutPaths._ = getThemeResolvePaths(pathJoin(FALLBACK_THEME, 'src', 'layout')).resolved
+          layoutPaths._ = getThemeResolvePaths(
+            pathJoin(FALLBACK_THEME, 'src', 'layout')
+          ).resolved
       }
-    });
+    })
 
     // demo layout
-    [pathJoin(entryDir, 'layouts', 'demo'), pathJoin(fallback, 'src', 'layouts', 'demo')].some(
-      (layoutPath) => {
-        try {
-          layoutPaths.demo = getThemeResolvePaths(layoutPath).resolved
+    ;[
+      pathJoin(entryDir, 'layouts', 'demo'),
+      pathJoin(fallback, 'src', 'layouts', 'demo'),
+    ].some((layoutPath) => {
+      try {
+        layoutPaths.demo = getThemeResolvePaths(layoutPath).resolved
 
-          return true
-        }
-        catch (err) {
-          /* nothing */
-        }
-      },
-    )
+        return true
+      } catch (err) {
+        /* nothing */
+      }
+    })
 
     // get markdown components
     const mdComponents: any[] = await ctx.umi.applyPlugins({
@@ -253,7 +278,7 @@ export default async() => {
       initialValue: [],
     })
 
-    const customs = mdComponents.map(component => ({
+    const customs = mdComponents.map((component) => ({
       identifier: component.name,
       source: pathJoin(component.component),
       cModulePath: pathJoin(component.component),

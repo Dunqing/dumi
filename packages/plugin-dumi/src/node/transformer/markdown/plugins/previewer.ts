@@ -7,36 +7,48 @@ import type { Element } from 'hast'
 import { replaceElementToPreviewer } from '../utils/node'
 import { analyzeDeps } from '../../parser'
 
-export const previewer: Plugin<[], Element> = function() {
-  return async(root, file, next) => {
+export const previewer: Plugin<[], Element> = function () {
+  return async (root, file, next) => {
     const nodes: Parameters<Visitor<Element, Element>>[] = []
 
-    visit(root, {
-      type: 'element',
-      tagName: 'code',
-    }, (node, index, parent) => {
-      const src = node.properties?.src as string
-      if (!src)
-        return
+    visit(
+      root,
+      {
+        type: 'element',
+        tagName: 'code',
+      },
+      (node, index, parent) => {
+        const src = node.properties?.src as string
+        if (!src) return
 
-      if (node.properties?.inline !== undefined && node.properties?.inline !== false) {
-        node.tagName = 'CodeComponent'
-        return
+        if (
+          node.properties?.inline !== undefined &&
+          node.properties?.inline !== false
+        ) {
+          node.tagName = 'CodeComponent'
+          return
+        }
+
+        nodes.push([node, index, parent])
       }
+    )
 
-      nodes.push([node, index, parent])
-    })
-
-    await pEachSeries(nodes, async([node, index, parent]) => {
+    await pEachSeries(nodes, async ([node, index, parent]) => {
       const src = node.properties!.src as string
 
       const deps = await analyzeDeps({
         path: path.posix.join(file.dirname!, src),
-        resolve: (file.data.resolve) as any,
+        resolve: file.data.resolve as any,
         importer: file.path,
-      });
+      })
 
-      ((file.data.additionalPreviewerProps || (file.data.additionalPreviewerProps = {})) as Record<string, typeof deps>)[src] = deps
+      ;(
+        (file.data.additionalPreviewerProps ||
+          (file.data.additionalPreviewerProps = {})) as Record<
+          string,
+          typeof deps
+        >
+      )[src] = deps
 
       replaceElementToPreviewer([node, index, parent], {
         src,

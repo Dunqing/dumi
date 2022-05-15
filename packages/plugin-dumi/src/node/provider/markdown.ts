@@ -19,19 +19,21 @@ interface MetaData {
 }
 
 export const detectMarkdowns = (root: string) => {
-  const paths = glob.sync(['docs/**/*.md', 'src/**/*.md'], {
-    cwd: root,
-    ignore: ['**/node_modules/**'],
-  }).map((p) => {
-    return {
-      id: normalizePath(p),
-      path: normalizePath(path.posix.join(root, p)),
-    }
-  })
+  const paths = glob
+    .sync(['docs/**/*.md', 'src/**/*.md'], {
+      cwd: root,
+      ignore: ['**/node_modules/**'],
+    })
+    .map((p) => {
+      return {
+        id: normalizePath(p),
+        path: normalizePath(path.posix.join(root, p)),
+      }
+    })
   return paths
 }
 
-export const loadMarkdowns = async(root: string, resolve: ResolveFunction) => {
+export const loadMarkdowns = async (root: string, resolve: ResolveFunction) => {
   const paths = detectMarkdowns(root)
 
   const transformResults = []

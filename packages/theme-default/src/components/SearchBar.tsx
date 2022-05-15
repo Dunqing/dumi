@@ -8,7 +8,9 @@ export const highlight = (key: string, title: string) => {
   return (
     <>
       {title.substring(0, index)}
-      <span className="__dumi-default-search-highlight">{title.substring(index, index + l)}</span>
+      <span className="__dumi-default-search-highlight">
+        {title.substring(index, index + l)}
+      </span>
       {title.substring(index + l, title.length)}
     </>
   )
@@ -35,10 +37,8 @@ export default function SearchBar() {
   )
 
   useEffect(() => {
-    if (Array.isArray(result))
-      setItems(result)
-    else if (typeof result === 'function')
-      result(`.${input.current.className}`)
+    if (Array.isArray(result)) setItems(result)
+    else if (typeof result === 'function') result(`.${input.current.className}`)
   }, [result])
 
   return (
@@ -48,19 +48,25 @@ export default function SearchBar() {
         type="search"
         ref={input}
         {...(Array.isArray(result)
-          ? { value: keywords, onChange: ev => setKeywords(ev.target.value) }
+          ? { value: keywords, onChange: (ev) => setKeywords(ev.target.value) }
           : {})}
       />
       <ul>
-        {items.length > 0 && items.map(meta => (
-          <li key={meta.path} onClick={() => setKeywords('')}>
-            <AnchorLink to={meta.path}>
-              {meta.parent?.title && <span>{meta.parent.title}</span>}
-              {highlight(keywords, meta.title)}
-            </AnchorLink>
-          </li>
-        ))}
-        {items.length === 0 && keywords && <li style={{ textAlign: 'center' }}>{emptySvg}</li>}
+        {items.length > 0 &&
+          items.map((meta) => (
+            <li
+              key={meta.path}
+              onClick={() => setKeywords('')}
+            >
+              <AnchorLink to={meta.path}>
+                {meta.parent?.title && <span>{meta.parent.title}</span>}
+                {highlight(keywords, meta.title)}
+              </AnchorLink>
+            </li>
+          ))}
+        {items.length === 0 && keywords && (
+          <li style={{ textAlign: 'center' }}>{emptySvg}</li>
+        )}
       </ul>
     </div>
   )

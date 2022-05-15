@@ -20,7 +20,12 @@ export interface ICodeBlockProps {
   showCopy?: boolean
 }
 
-export default function SourceCode({ code, children, lang, showCopy = true }: ICodeBlockProps) {
+export default function SourceCode({
+  code,
+  children,
+  lang,
+  showCopy = true,
+}: ICodeBlockProps) {
   const [copyCode, copyStatus] = useCopy()
 
   return (
@@ -32,7 +37,10 @@ export default function SourceCode({ code, children, lang, showCopy = true }: IC
         theme={undefined}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={className} style={style}>
+          <pre
+            className={className}
+            style={style}
+          >
             {showCopy && (
               <button
                 className="__dumi-default-icon __dumi-default-code-block-copy-btn"
@@ -41,9 +49,15 @@ export default function SourceCode({ code, children, lang, showCopy = true }: IC
               />
             )}
             {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })}>
+              <div
+                key={i}
+                {...getLineProps({ line, key: i })}
+              >
                 {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
+                  <span
+                    key={key}
+                    {...getTokenProps({ token, key })}
+                  />
                 ))}
               </div>
             ))}

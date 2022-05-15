@@ -11,7 +11,12 @@ interface INavbarProps {
   onMobileMenuClick: (ev: MouseEvent<HTMLButtonElement>) => void
 }
 
-const Navbar: FC<INavbarProps> = ({ onMobileMenuClick, navPrefix, location, darkPrefix }) => {
+const Navbar: FC<INavbarProps> = ({
+  onMobileMenuClick,
+  navPrefix,
+  location,
+  darkPrefix,
+}) => {
   const {
     base,
     config: { mode, title, logo },
@@ -19,9 +24,15 @@ const Navbar: FC<INavbarProps> = ({ onMobileMenuClick, navPrefix, location, dark
   } = useContext(context)
 
   return (
-    <div className="__dumi-default-navbar" data-mode={mode}>
+    <div
+      className="__dumi-default-navbar"
+      data-mode={mode}
+    >
       {/* menu toogle button (only for mobile) */}
-      <button className="__dumi-default-navbar-toggle" onClick={onMobileMenuClick} />
+      <button
+        className="__dumi-default-navbar-toggle"
+        onClick={onMobileMenuClick}
+      />
       {/* logo & title */}
       <Link
         className="__dumi-default-navbar-logo"
@@ -39,7 +50,7 @@ const Navbar: FC<INavbarProps> = ({ onMobileMenuClick, navPrefix, location, dark
         {navItems.map((nav) => {
           const child = Boolean(nav.children?.length) && (
             <ul>
-              {nav.children.map(item => (
+              {nav.children.map((item) => (
                 <li key={item.path}>
                   <NavLink to={item.path}>{item.title}</NavLink>
                 </li>
@@ -49,15 +60,16 @@ const Navbar: FC<INavbarProps> = ({ onMobileMenuClick, navPrefix, location, dark
 
           return (
             <span key={nav.title || nav.path}>
-              {nav.path
-                ? (
-                <NavLink to={nav.path} key={nav.path}>
+              {nav.path ? (
+                <NavLink
+                  to={nav.path}
+                  key={nav.path}
+                >
                   {nav.title}
                 </NavLink>
-                  )
-                : (
-                    nav.title
-                  )}
+              ) : (
+                nav.title
+              )}
               {child}
             </span>
           )

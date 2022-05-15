@@ -8,5 +8,6 @@ export default defineConfig({
     plugin(),
     react({
       include: [/\.md$/],
-    })],
+    }),
+  ],
 })

@@ -93,6 +93,7 @@ dumi will automatically specify `group.title` as `Components` and specify `group
 group:
   title: component
 ---
+
 ```
 
 Eventually, the `group.path` will still generated to `/components`, but `group.title` generated to `component`.

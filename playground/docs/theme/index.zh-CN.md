@@ -45,8 +45,8 @@ export default {
         { minWidth: 376, maxWidth: 750, mode: 'vw', options: [100, 1500] },
       ],
       // 更多 rule 配置访问 https://github.com/umijs/dumi/blob/master/packages/theme-mobile/src/typings/config.d.ts#L7
-    }
-  }
+    },
+  },
 }
 ```
 

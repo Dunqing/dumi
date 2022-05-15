@@ -11,9 +11,13 @@ const API_ENDPOINTS = {
  */
 export default (locale: string, code: string) => {
   const processor = (...args: [string, any]) => {
-    const api = /^zh|cn$/.test(args[0]) ? API_ENDPOINTS['zh-CN'] : API_ENDPOINTS['en-US']
+    const api = /^zh|cn$/.test(args[0])
+      ? API_ENDPOINTS['zh-CN']
+      : API_ENDPOINTS['en-US']
 
-    return `${api}?skipLibCheck=true&jsx=1#code/${LZString.compressToEncodedURIComponent(args[1])}`
+    return `${api}?skipLibCheck=true&jsx=1#code/${LZString.compressToEncodedURIComponent(
+      args[1]
+    )}`
   }
   const [url, setUrl] = useState(processor(locale, code))
 

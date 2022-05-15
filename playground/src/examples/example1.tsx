@@ -12,9 +12,15 @@ export default function Example1() {
 
     return () => clearInterval(timer)
   }, [])
-  return <div>
-    <p>Example1 {count}</p>
-    <p><Example2 /></p>
-    <p><Example3 /></p>
-  </div>
+  return (
+    <div>
+      <p>Example1 {count}</p>
+      <p>
+        <Example2 />
+      </p>
+      <p>
+        <Example3 />
+      </p>
+    </div>
+  )
 }

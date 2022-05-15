@@ -14,25 +14,25 @@ interface Meta {
 
 const parseMeta = (meta?: string): Meta => {
   return (meta || '').split('|').reduce((m: Record<any, true>, k) => {
-    if (!k.trim())
-      return m
+    if (!k.trim()) return m
     m[k.trim()] = true
     return m
   }, {})
 }
 
-export const codeblock: Plugin<[], Element> = function() {
+export const codeblock: Plugin<[], Element> = function () {
   const allowPreviewerLangs = ['tsx', 'jsx']
-  return async(root, file, next) => {
+  return async (root, file, next) => {
     const nodes: Parameters<Visitor<Element, Element>>[] = []
     let codeblockIndex = 0
 
     visit(root, { type: 'element', tagName: 'code' }, (node, index, parent) => {
       const meta = { ...parseMeta(node.data?.meta as string), ...node.data }
-      const lang = (node.properties?.className as string[])?.map((name: string) => name.startsWith('language-') && name.slice(9)).filter(Boolean)?.[0]
+      const lang = (node.properties?.className as string[])
+        ?.map((name: string) => name.startsWith('language-') && name.slice(9))
+        .filter(Boolean)?.[0]
 
-      if (!lang)
-        return
+      if (!lang) return
 
       if (!meta.pure && allowPreviewerLangs.includes(lang)) {
         const src = `codeblockPreviewer${++codeblockIndex}.${lang}`
@@ -43,8 +43,7 @@ export const codeblock: Plugin<[], Element> = function() {
         }
 
         nodes.push([node, index, parent])
-      }
-      else {
+      } else {
         node.tagName = 'SourceCode'
         node.properties = {
           lang,
@@ -54,17 +53,23 @@ export const codeblock: Plugin<[], Element> = function() {
       }
     })
 
-    await pEachSeries(nodes, async([node, index, parent]) => {
+    await pEachSeries(nodes, async ([node, index, parent]) => {
       const src = node.properties!.src as string
       const source = toString(node)
 
       const deps = await analyzeDeps({
-        resolve: (file.data.resolve) as any,
+        resolve: file.data.resolve as any,
         source,
         importer: file.path,
-      });
+      })
 
-      ((file.data.additionalPreviewerProps || (file.data.additionalPreviewerProps = {})) as Record<string, typeof deps>)[src] = deps
+      ;(
+        (file.data.additionalPreviewerProps ||
+          (file.data.additionalPreviewerProps = {})) as Record<
+          string,
+          typeof deps
+        >
+      )[src] = deps
       replaceElementToPreviewer([node, index, parent], {
         source,
       })

@@ -149,7 +149,9 @@ export default (props) => {
 
   return (
     <>
-      <button onClick={() => setColor('auto')}>Enable auto prefers color</button>
+      <button onClick={() => setColor('auto')}>
+        Enable auto prefers color
+      </button>
       Current prefers color: {color}
     </>
   )

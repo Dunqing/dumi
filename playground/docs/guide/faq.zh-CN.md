@@ -265,9 +265,8 @@ dumi 语法高亮使用的 [prism-react-renderer](https://github.com/FormidableL
 
 ```tsx | pure
 // src/app.ts
-import Prism from 'prism-react-renderer/prism';
-
-(typeof global !== 'undefined' ? global : window).Prism = Prism
+import Prism from 'prism-react-renderer/prism'
+;(typeof global !== 'undefined' ? global : window).Prism = Prism
 
 require('prismjs/components/prism-kotlin')
 require('prismjs/components/prism-csharp')

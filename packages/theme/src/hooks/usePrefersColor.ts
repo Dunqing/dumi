@@ -19,10 +19,12 @@ class ColorChanger {
   private callbacks: ((color: PrefersColorValue) => void)[] = []
 
   constructor() {
-    this.color = (localStorage.getItem(COLOR_LS_NAME)
-      || document.documentElement.getAttribute(COLOR_ATTR_NAME)) as PrefersColorValue;
+    this.color = (localStorage.getItem(COLOR_LS_NAME) ||
+      document.documentElement.getAttribute(
+        COLOR_ATTR_NAME
+      )) as PrefersColorValue
     // listen prefers color change
-    (['light', 'dark'] as PrefersColorValue[]).forEach((color) => {
+    ;(['light', 'dark'] as PrefersColorValue[]).forEach((color) => {
       const mediaQueryList = this.getColorMedia(color)
       const handler = (ev: any) => {
         // only apply media prefers color in auto mode
@@ -35,9 +37,7 @@ class ColorChanger {
       /* istanbul ignore else */
       if (mediaQueryList.addEventListener)
         mediaQueryList.addEventListener('change', handler)
-
-      else if (mediaQueryList.addListener)
-        mediaQueryList.addListener(handler)
+      else if (mediaQueryList.addListener) mediaQueryList.addListener(handler)
     })
   }
 
@@ -61,7 +61,7 @@ class ColorChanger {
    * apply all event change callbacks
    */
   applyCallbacks() {
-    this.callbacks.forEach(cb => cb(this.color))
+    this.callbacks.forEach((cb) => cb(this.color))
   }
 
   /**
@@ -91,10 +91,9 @@ class ColorChanger {
     if (color === 'auto') {
       document.documentElement.setAttribute(
         COLOR_ATTR_NAME,
-        this.isColorMode('dark') ? 'dark' : 'light',
+        this.isColorMode('dark') ? 'dark' : 'light'
       )
-    }
-    else {
+    } else {
       document.documentElement.setAttribute(COLOR_ATTR_NAME, color)
     }
 

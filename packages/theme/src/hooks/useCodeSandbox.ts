@@ -26,11 +26,13 @@ function getTextContent(raw: string) {
  * @param opts  previewer props
  */
 function getCSBData(opts: any) {
-  const isTSX = Boolean(Object.values(opts.sources).some(s => s.lang === 'tsx'))
+  const isTSX = Boolean(
+    Object.values(opts.sources).some((s) => s.lang === 'tsx')
+  )
   const ext = isTSX ? '.tsx' : '.jsx'
   const files: Record<string, { content: string }> = {}
   const deps: Record<string, string> = {}
-  const CSSDeps = Object.values(opts.dependencies).filter(dep => dep.css)
+  const CSSDeps = Object.values(opts.dependencies).filter((dep) => dep.css)
   const appFileName = `App${ext}`
   const entryFileName = `index${ext}`
 
@@ -40,8 +42,7 @@ function getCSBData(opts: any) {
   })
 
   // add react-dom dependency
-  if (!deps['react-dom'])
-    deps['react-dom'] = deps.react || 'latest'
+  if (!deps['react-dom']) deps['react-dom'] = deps.react || 'latest'
 
   // append sandbox.config.json
   files['sandbox.config.json'] = {
@@ -50,7 +51,7 @@ function getCSBData(opts: any) {
         template: isTSX ? 'create-react-app-typescript' : 'create-react-app',
       },
       null,
-      2,
+      2
     ),
   }
 
@@ -59,19 +60,22 @@ function getCSBData(opts: any) {
     content: JSON.stringify(
       {
         name: opts.title,
-        description: getTextContent(opts.description) || 'An auto-generated demo by dumi',
+        description:
+          getTextContent(opts.description) || 'An auto-generated demo by dumi',
         main: entryFileName,
         dependencies: deps,
         // add TypeScript dependency if required, must in devDeps to avoid csb compile error
         devDependencies: isTSX ? { typescript: '^4' } : {},
       },
       null,
-      2,
+      2
     ),
   }
 
   // append index.html
-  files['index.html'] = { content: '<div style="margin: 16px;" id="root"></div>' }
+  files['index.html'] = {
+    content: '<div style="margin: 16px;" id="root"></div>',
+  }
 
   // append entry file
   files[entryFileName] = {

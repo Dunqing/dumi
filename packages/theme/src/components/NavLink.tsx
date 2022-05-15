@@ -6,15 +6,15 @@ import Link from './Link'
 export interface NavLinkProps
   extends Omit<LinkProps, 'className' | 'style' | 'children'> {
   children?:
-  | React.ReactNode
-  | ((props: { isActive: boolean }) => React.ReactNode)
+    | React.ReactNode
+    | ((props: { isActive: boolean }) => React.ReactNode)
   caseSensitive?: boolean
   className?: string | ((props: { isActive: boolean }) => string | undefined)
   end?: boolean
   active?: boolean
   style?:
-  | React.CSSProperties
-  | ((props: { isActive: boolean }) => React.CSSProperties)
+    | React.CSSProperties
+    | ((props: { isActive: boolean }) => React.CSSProperties)
 }
 
 /**
@@ -34,7 +34,7 @@ const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
       active,
       ...rest
     },
-    ref,
+    ref
   ) => {
     const location = useLocation()
     const path = useResolvedPath(to)
@@ -46,21 +46,20 @@ const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
       toPathname = toPathname.toLowerCase()
     }
 
-    const isActive
-      = active !== undefined
+    const isActive =
+      active !== undefined
         ? active
-        : (locationPathname === toPathname
-          || (!end
-            && locationPathname.startsWith(toPathname)
-            && locationPathname.charAt(toPathname.length) === '/'))
+        : locationPathname === toPathname ||
+          (!end &&
+            locationPathname.startsWith(toPathname) &&
+            locationPathname.charAt(toPathname.length) === '/')
 
     const ariaCurrent = isActive ? ariaCurrentProp : undefined
 
     let className: string | undefined
     if (typeof classNameProp === 'function') {
       className = classNameProp({ isActive })
-    }
-    else {
+    } else {
       // If the className prop is not a function, we use a default `active`
       // class for <NavLink />s that are active. In v5 `active` was the default
       // value for `activeClassName`, but we are removing that API and can still
@@ -71,8 +70,8 @@ const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
         .join(' ')
     }
 
-    const style
-      = typeof styleProp === 'function' ? styleProp({ isActive }) : styleProp
+    const style =
+      typeof styleProp === 'function' ? styleProp({ isActive }) : styleProp
 
     return (
       <Link
@@ -86,7 +85,7 @@ const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
         {typeof children === 'function' ? children({ isActive }) : children}
       </Link>
     )
-  },
+  }
 )
 
 export default NavLink

@@ -1,7 +1,11 @@
 import type { EstreeProgram } from 'hast-util-to-estree'
 import type { Plugin } from 'unified'
 import { template, traverse } from '@babel/core'
-import type { ExpressionStatement, Statement, StringLiteral } from '@babel/types'
+import type {
+  ExpressionStatement,
+  Statement,
+  StringLiteral,
+} from '@babel/types'
 import { isJSXAttribute, isJSXElement, isJSXIdentifier } from '@babel/types'
 import { exportDefaultToConst } from '../../parser'
 
@@ -15,7 +19,10 @@ const replaceCodeComponent = (ast: EstreeProgram) => {
           const { source, src } = path.node.attributes.reduce((obj, attr) => {
             if (isJSXAttribute(attr)) {
               if (isJSXIdentifier(attr.name))
-                return { ...obj, [attr.name.name]: (attr.value as StringLiteral).value }
+                return {
+                  ...obj,
+                  [attr.name.name]: (attr.value as StringLiteral).value,
+                }
             }
             return obj
           }, {} as Record<'source' | 'src', string>)
@@ -24,20 +31,19 @@ const replaceCodeComponent = (ast: EstreeProgram) => {
             const name = `CodeComponent${++index}`
 
             path.parentPath.replaceWith(
-              template.ast(
-                  `\<${name} />`,
-                  {
-                    plugins: ['jsx'],
-                  },
-              ) as Statement,
+              template.ast(`\<${name} />`, {
+                plugins: ['jsx'],
+              }) as Statement
             )
 
             dependencies.push(
-              ...[template.ast(
-                source
-                  ? `${exportDefaultToConst(source, 'tsx', name)}`
-                  : `import ${name} from ${JSON.stringify(src)}`,
-              )].flat(1),
+              ...[
+                template.ast(
+                  source
+                    ? `${exportDefaultToConst(source, 'tsx', name)}`
+                    : `import ${name} from ${JSON.stringify(src)}`
+                ),
+              ].flat(1)
             )
           }
         }
@@ -48,18 +54,21 @@ const replaceCodeComponent = (ast: EstreeProgram) => {
   return dependencies
 }
 
-export const page: Plugin<[], EstreeProgram> = function() {
+export const page: Plugin<[], EstreeProgram> = function () {
   return (ast, file) => {
     const dependencies = replaceCodeComponent(ast)
 
-    return template.program(`
+    return template.program(
+      `
       import React, { lazy, useCallback } from 'react';
       import { AnchorLink } from '@dumi/theme'
       import { Previewer as ThemePreviewer, Layout, SourceCode } from '@dumi/theme-default'
 
       %%DEPENDENCIES%%
 
-      const additionalPreviewerProps = ${JSON.stringify(file.data.additionalPreviewerProps)}
+      const additionalPreviewerProps = ${JSON.stringify(
+        file.data.additionalPreviewerProps
+      )}
 
       const Previewer = (props) => {
         return <ThemePreviewer {...props} {...Reflect.get(additionalPreviewerProps, props.src)} />
@@ -75,9 +84,11 @@ export const page: Plugin<[], EstreeProgram> = function() {
           </Layout>
         )
       }
-    `, {
-      plugins: ['jsx'],
-    })({
+    `,
+      {
+        plugins: ['jsx'],
+      }
+    )({
       CHILDREN: (ast.body[0] as any as ExpressionStatement).expression,
       DEPENDENCIES: dependencies,
     }) as any

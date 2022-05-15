@@ -7,7 +7,7 @@ export default defineConfig({
     lib: {
       entry: './src/index.ts',
       formats: ['es', 'cjs'],
-      fileName: format => `index.${format === 'cjs' ? 'js' : 'mjs'}`,
+      fileName: (format) => `index.${format === 'cjs' ? 'js' : 'mjs'}`,
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react-router-dom', '@dumi/theme'],

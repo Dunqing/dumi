@@ -32,9 +32,15 @@ const generateParsedPath = () => {
   `
 }
 
-export const dumiProvider = async(config: ResolvedConfig, resolve: ResolveFunction) => {
+export const dumiProvider = async (
+  config: ResolvedConfig,
+  resolve: ResolveFunction
+) => {
   const Sources = await loadMarkdowns(config.root, resolve)
-  const locales = [['en-US', 'English'], ['zh-CN', '中文']].map(i => i[0])
+  const locales = [
+    ['en-US', 'English'],
+    ['zh-CN', '中文'],
+  ].map((i) => i[0])
 
   const code = `
     import React, { lazy } from 'react'

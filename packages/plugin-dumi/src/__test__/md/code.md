@@ -1,7 +1,10 @@
 ```tsx | pure
-renderFormItem: (_, { type, defaultRender, formItemProps, fieldProps, ...rest }, form) => {
-  if (type === 'form')
-    return null
+renderFormItem: (
+  _,
+  { type, defaultRender, formItemProps, fieldProps, ...rest },
+  form
+) => {
+  if (type === 'form') return null
 
   const status = form.getFieldValue('state')
   if (status !== 'open') {

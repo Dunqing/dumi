@@ -112,7 +112,7 @@ dumi 完全使用 Umi 的插件体系，可访问 Umi 的[插件开发最佳实�
 // /path/to/plugin.ts
 import type { IApi } from 'dumi'
 
-export default async(api: IApi) => {
+export default async (api: IApi) => {
   const rootRoute = await api.applyPlugins({
     key: 'dumi.getRootRoute',
     type: api.ApplyPluginsType.modify,
@@ -244,7 +244,7 @@ export default (api) => {
         //   mdAbsPath: string,            当前 Markdown 文件的路径
         //   node: mdASTNode,              语法树节点
         // }
-        opts,
+        opts
       ) => {
         // 从其他技术栈工具中获取 demo 渲染需要的内容，例如 dev server 的产物地址等
         // 出参类型参考：https://github.com/umijs/dumi/blob/master/packages/preset-dumi/src/transformer/remark/previewer/builtin.ts#L50

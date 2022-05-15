@@ -11,7 +11,11 @@ interface INavbarProps {
   darkPrefix?: React.ReactNode
 }
 
-const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix }) => {
+const SideMenu: FC<INavbarProps> = ({
+  mobileMenuCollapsed,
+  location,
+  darkPrefix,
+}) => {
   const {
     config: {
       logo,
@@ -26,10 +30,10 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
     meta,
   } = useContext(context)
 
-  const isHiddenMenus
-    = Boolean((meta.hero || meta.features || meta.gapless) && mode === 'site')
-    || meta.sidemenu === false
-    || undefined
+  const isHiddenMenus =
+    Boolean((meta.hero || meta.features || meta.gapless) && mode === 'site') ||
+    meta.sidemenu === false ||
+    undefined
 
   return (
     <div
@@ -54,8 +58,9 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
             <p>
               <object
                 type="image/svg+xml"
-                data={`https://img.shields.io/github/stars${repoUrl.match(/((\/[^\/]+){2})$/)[1]
-                  }?style=social`}
+                data={`https://img.shields.io/github/stars${
+                  repoUrl.match(/((\/[^\/]+){2})$/)[1]
+                }?style=social`}
               />
             </p>
           )}
@@ -68,7 +73,7 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
               {navItems.map((nav) => {
                 const child = Boolean(nav.children?.length) && (
                   <ul>
-                    {nav.children.map(item => (
+                    {nav.children.map((item) => (
                       <li key={item.path || item.title}>
                         <NavLink to={item.path}>{item.title}</NavLink>
                       </li>
@@ -78,7 +83,11 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
 
                 return (
                   <li key={nav.path || nav.title}>
-                    {nav.path ? <NavLink to={nav.path}>{nav.title}</NavLink> : nav.title}
+                    {nav.path ? (
+                      <NavLink to={nav.path}>{nav.title}</NavLink>
+                    ) : (
+                      nav.title
+                    )}
                     {child}
                   </li>
                 )
@@ -91,19 +100,23 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
         </div>
         {/* menu list */}
         <ul className="__dumi-default-menu-list">
-          {!isHiddenMenus
-            && menu.map((item) => {
+          {!isHiddenMenus &&
+            menu.map((item) => {
               // always use meta from routes to reduce menu data size
               const hasSlugs = Boolean(meta.slugs?.length)
               const hasChildren = item.children && Boolean(item.children.length)
-              const show1LevelSlugs
-                = meta.toc === 'menu' && !hasChildren && hasSlugs && item.path === location.pathname.replace(/([^^])\/$/, '$1')
+              const show1LevelSlugs =
+                meta.toc === 'menu' &&
+                !hasChildren &&
+                hasSlugs &&
+                item.path === location.pathname.replace(/([^^])\/$/, '$1')
               const menuPaths = hasChildren
-                ? item.children.map(i => i.path)
+                ? item.children.map((i) => i.path)
                 : [
                     item.path,
                     // handle menu group which has no index route and no valid children
-                    location.pathname.startsWith(`${item.path}/`) && meta.title === item.title
+                    location.pathname.startsWith(`${item.path}/`) &&
+                    meta.title === item.title
                       ? location.pathname
                       : null,
                   ]
@@ -120,17 +133,20 @@ const SideMenu: FC<INavbarProps> = ({ mobileMenuCollapsed, location, darkPrefix 
                   {/* group children */}
                   {Boolean(item.children && item.children.length) && (
                     <ul>
-                      {item.children.map(child => (
+                      {item.children.map((child) => (
                         <li key={child.path}>
-                          <NavLink to={child.path} end>
+                          <NavLink
+                            to={child.path}
+                            end
+                          >
                             <span>{child.title}</span>
                           </NavLink>
                           {/* group children slugs */}
                           {Boolean(
-                            meta.toc === 'menu'
-                            && typeof window !== 'undefined'
-                            && child.path === location.pathname
-                            && hasSlugs,
+                            meta.toc === 'menu' &&
+                              typeof window !== 'undefined' &&
+                              child.path === location.pathname &&
+                              hasSlugs
                           ) && <SlugList slugs={meta.slugs} />}
                         </li>
                       ))}

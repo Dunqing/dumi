@@ -15,14 +15,14 @@ export interface IPreviewerComponentProps {
   title?: string
   description?: string
   sources:
-  | {
-    /**
+    | {
+        /**
          * self source code for demo
          * @note  jsx exsits definitely, tsx exists when the source code language is tsx
          */
-    _: { jsx: string; tsx?: string }
-  }
-  | Record<
+        _: { jsx: string; tsx?: string }
+      }
+    | Record<
         string,
         {
           import: string

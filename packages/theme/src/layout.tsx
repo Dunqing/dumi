@@ -14,7 +14,10 @@ export interface IOuterLayoutProps {
  * @param routes    project route configurations
  * @param pathname  pathname of location
  */
-const useCurrentRouteMeta = (routes: IOuterLayoutProps['routes'], pathname: string) => {
+const useCurrentRouteMeta = (
+  routes: IOuterLayoutProps['routes'],
+  pathname: string
+) => {
   const handler = (...args: [IOuterLayoutProps['routes'], string]) => {
     const pathWithoutSuffix = args[1].replace(/([^^])\/$/, '$1')
 
@@ -23,7 +26,9 @@ const useCurrentRouteMeta = (routes: IOuterLayoutProps['routes'], pathname: stri
       __pathname: pathname,
     }
   }
-  const [meta, setMeta] = useState<IThemeContext['meta']>(handler(routes, pathname))
+  const [meta, setMeta] = useState<IThemeContext['meta']>(
+    handler(routes, pathname)
+  )
 
   useLayoutEffect(() => {
     setMeta(handler(routes, pathname))
@@ -37,12 +42,15 @@ const useCurrentRouteMeta = (routes: IOuterLayoutProps['routes'], pathname: stri
  * @param locales   project locale configurations
  * @param pathname  pathname of location
  */
-const useCurrentLocale = (locales: IThemeContext['config']['locales'], pathname: string) => {
+const useCurrentLocale = (
+  locales: IThemeContext['config']['locales'],
+  pathname: string
+) => {
   const handler = (...args: [IThemeContext['config']['locales'], string]) => {
     // get locale by route prefix
     return (
-      args[0].find(locale => new RegExp(`/${locale.name}(/|$)`).test(args[1]))?.name
-      || locales[0].name
+      args[0].find((locale) => new RegExp(`/${locale.name}(/|$)`).test(args[1]))
+        ?.name || locales[0].name
     )
   }
   const [locale, setLocale] = useState<string>(handler(locales, pathname))
@@ -60,7 +68,11 @@ const useCurrentLocale = (locales: IThemeContext['config']['locales'], pathname:
  * @param locale    locale from current route
  * @param pathname  pathname of location
  */
-const useCurrentMenu = (ctxConfig: IThemeContext['config'], locale: string, pathname: string) => {
+const useCurrentMenu = (
+  ctxConfig: IThemeContext['config'],
+  locale: string,
+  pathname: string
+) => {
   const handler = (...args: [IThemeContext['config'], string, string]) => {
     const navs = args[0].navs[args[1]] || []
     let navPath = '*'
@@ -70,8 +82,11 @@ const useCurrentMenu = (ctxConfig: IThemeContext['config'], locale: string, path
       const nav = navs[i]
       const items = [nav].concat(nav.children).filter(Boolean)
       const matched = items.find(
-        item =>
-          item.path && new RegExp(`^${item.path.replace(/\.html$/, '')}(/|\.|$)`).test(args[2]),
+        (item) =>
+          item.path &&
+          new RegExp(`^${item.path.replace(/\.html$/, '')}(/|\.|$)`).test(
+            args[2]
+          )
       )
 
       if (matched) {
@@ -103,9 +118,11 @@ const useCurrentMenu = (ctxConfig: IThemeContext['config'], locale: string, path
 const useCurrentBase = (
   locale: string,
   locales: IThemeContext['config']['locales'],
-  route: any,
+  route: any
 ) => {
-  const handler = (...args: [string, IThemeContext['config']['locales'], IRouteProps]) => {
+  const handler = (
+    ...args: [string, IThemeContext['config']['locales'], IRouteProps]
+  ) => {
     if (args[0] === args[1][0].name) {
       // use layout route path as base in default locale
       return args[2].path
@@ -125,11 +142,9 @@ const useCurrentBase = (
 
 const findDumiRoot = (routes: any): IThemeContext['routes'] => {
   return routes.find((item) => {
-    if (item.__dumiRoot)
-      return true
+    if (item.__dumiRoot) return true
 
-    if (item.routes)
-      return findDumiRoot(item.routes)
+    if (item.routes) return findDumiRoot(item.routes)
 
     return false
   })?.routes
@@ -145,7 +160,7 @@ const OuterLayout: React.FC<IOuterLayoutProps & any> = (props) => {
   const pathWithoutPrefix = location.pathname.replace(
     // to avoid stripped the first /
     route.path.replace(/^\/$/, '//'),
-    '',
+    ''
   )
   const routes = findDumiRoot(props.routes) || []
   const meta = useCurrentRouteMeta(routes, location.pathname)

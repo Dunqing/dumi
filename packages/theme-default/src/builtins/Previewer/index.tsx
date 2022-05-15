@@ -57,12 +57,14 @@ export interface IPreviewerProps extends IPreviewerComponentProps {
  * @param file    file path
  * @param source  file source object
  */
-function getSourceType(file: string, source: IPreviewerComponentProps['sources']['_']) {
+function getSourceType(
+  file: string,
+  source: IPreviewerComponentProps['sources']['_']
+) {
   // use file extension as source type first
   let type = file.match(/\.(\w+)$/)?.[1]
 
-  if (!type)
-    type = source.tsx ? 'tsx' : 'jsx'
+  if (!type) type = source.tsx ? 'tsx' : 'jsx'
 
   return type as ICodeBlockProps['lang']
 }
@@ -76,22 +78,24 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
   const location = useLocation()
   const isActive = location.hash === `#${props.identifier}`
   const isSingleFile = Object.keys(props.sources).length === 1
-  const openCSB = useCodeSandbox(props.hideActions?.includes('CSB') ? null : props)
+  const openCSB = useCodeSandbox(
+    props.hideActions?.includes('CSB') ? null : props
+  )
   const [copyCode, copyStatus] = useCopy()
   const [currentFile, setCurrentFile] = useState(() =>
-    props.sources._ ? '_' : Object.keys(props.sources)[0],
+    props.sources._ ? '_' : Object.keys(props.sources)[0]
   )
   const [sourceType, setSourceType] = useState(
-    getSourceType(currentFile, props.sources[currentFile]),
+    getSourceType(currentFile, props.sources[currentFile])
   )
   const [showSource, setShowSource] = useState(Boolean(!props.defaultShowCode))
   const [iframeKey, setIframeKey] = useState(Math.random())
-  const currentFileCode
-    = props.sources[currentFile][sourceType] || props.sources[currentFile].content
+  const currentFileCode =
+    props.sources[currentFile][sourceType] || props.sources[currentFile].content
   const playgroundUrl = useTSPlaygroundUrl(locale, currentFileCode)
   const iframeRef = useRef<HTMLIFrameElement>()
   const [color] = usePrefersColor()
-  const { actionBarRender = o => o } = props
+  const { actionBarRender = (o) => o } = props
 
   // re-render iframe if prefers color changed
   useEffect(() => {
@@ -123,7 +127,10 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
         className="__dumi-default-previewer-demo"
         style={{
           transform: props.transform ? 'translate(0, 0)' : undefined,
-          padding: props.compact || (props.iframe && props.compact !== false) ? '0' : undefined,
+          padding:
+            props.compact || (props.iframe && props.compact !== false)
+              ? '0'
+              : undefined,
           background: props.background,
         }}
       >
@@ -142,12 +149,15 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
           props.children
         )}
       </div>
-      <div className="__dumi-default-previewer-desc" data-title={props.title}>
-        {props.title && <AnchorLink to={`#${props.identifier}`}>{props.title}</AnchorLink>}
+      <div
+        className="__dumi-default-previewer-desc"
+        data-title={props.title}
+      >
+        {props.title && (
+          <AnchorLink to={`#${props.identifier}`}>{props.title}</AnchorLink>
+        )}
         {props.description && (
-          <div
-            dangerouslySetInnerHTML={{ __html: props.description }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: props.description }} />
         )}
       </div>
       <div className="__dumi-default-previewer-actions">
@@ -170,7 +180,10 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
               />
             )}
             {!props.hideActions?.includes('EXTERNAL') && (
-              <Link target="_blank" to={demoUrl}>
+              <Link
+                target="_blank"
+                to={demoUrl}
+              >
                 <button
                   title="Open demo in new tab"
                   className="__dumi-default-icon"
@@ -188,7 +201,10 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
               onClick={() => copyCode(currentFileCode)}
             />
             {sourceType === 'tsx' && showSource && (
-              <Link target="_blank" to={playgroundUrl}>
+              <Link
+                target="_blank"
+                to={playgroundUrl}
+              >
                 <button
                   title="Get JSX via TypeScript Playground"
                   className="__dumi-default-icon"
@@ -199,12 +215,14 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
             )}
             <button
               title="Toggle source code panel"
-              className={`__dumi-default-icon${showSource ? ' __dumi-default-btn-expand' : ''}`}
+              className={`__dumi-default-icon${
+                showSource ? ' __dumi-default-btn-expand' : ''
+              }`}
               role="source"
               type="button"
               onClick={() => setShowSource(!showSource)}
             />
-          </>,
+          </>
         )}
       </div>
       {showSource && (
@@ -217,11 +235,14 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
               defaultActiveKey={currentFile}
               onChange={handleFileChange}
             >
-              {Object.keys(props.sources).map(filename => (
+              {Object.keys(props.sources).map((filename) => (
                 <TabPane
                   tab={
                     filename === '_'
-                      ? `index.${getSourceType(filename, props.sources[filename])}`
+                      ? `index.${getSourceType(
+                          filename,
+                          props.sources[filename]
+                        )}`
                       : filename
                   }
                   key={filename}
@@ -230,7 +251,11 @@ const Previewer: React.FC<IPreviewerProps> = (oProps) => {
             </Tabs>
           )}
           <div className="__dumi-default-previewer-source">
-            <SourceCode code={currentFileCode} lang={sourceType} showCopy={false} />
+            <SourceCode
+              code={currentFileCode}
+              lang={sourceType}
+              showCopy={false}
+            />
           </div>
         </div>
       )}

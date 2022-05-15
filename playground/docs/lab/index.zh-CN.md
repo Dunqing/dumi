@@ -30,7 +30,12 @@ export default () => {
   return (
     <>
       <p>{count}</p>
-      <button type="button" style={{ color: '#000' }} data-action="addon" onClick={() => setCount(count + 1)}>
+      <button
+        type="button"
+        style={{ color: '#000' }}
+        data-action="addon"
+        onClick={() => setCount(count + 1)}
+      >
         增加
       </button>
       <button
@@ -65,7 +70,12 @@ export default () => {
   return (
     <>
       <p>{count}</p>
-      <button type="button" style={{ color: '#000' }} data-action="addon" onClick={() => setCount(count + 1)}>
+      <button
+        type="button"
+        style={{ color: '#000' }}
+        data-action="addon"
+        onClick={() => setCount(count + 1)}
+      >
         增加
       </button>
       <button

@@ -12,7 +12,10 @@ interface PluginOptions {
 
 const MARKDOWN_ENTRY = 'MARKDOWN_ENTRY'
 
-export default function plugin({ include = [], exclude = [] }: PluginOptions = {}): Plugin {
+export default function plugin({
+  include = [],
+  exclude = [],
+}: PluginOptions = {}): Plugin {
   const filter = createFilter(include, exclude)
 
   const entryPath = path.resolve(__dirname, '..', 'src', './client/index.tsx')
@@ -25,12 +28,10 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
       config = _config
     },
     resolveId(id: string) {
-      if (id === 'virtual:dumi-provider')
-        return id
+      if (id === 'virtual:dumi-provider') return id
 
       if (id) {
-        if (!filter(id))
-          return undefined
+        if (!filter(id)) return undefined
       }
     },
     async load(id) {
@@ -51,9 +52,11 @@ export default function plugin({ include = [], exclude = [] }: PluginOptions = {
           return this.resolve(id, importer, {
             skipSelf: true,
           })
-        }).then(res => transformSync(res.value.toString(), {
-          loader: 'tsx',
-        }))
+        }).then((res) =>
+          transformSync(res.value.toString(), {
+            loader: 'tsx',
+          })
+        )
       }
     },
     transformIndexHtml(html) {

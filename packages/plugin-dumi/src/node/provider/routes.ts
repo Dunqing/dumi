@@ -8,11 +8,11 @@ export const generateRoutes = (Sources: SourcesType) => {
       const buildingRoutes = () => {
         const __runtimeComponent__ = (src) => {
           switch (src) {
-            ${
-              Sources.map((s) => {
-                return `case ${JSON.stringify(s.id)}: return lazy(() => import(${JSON.stringify(s.path)}));`
-              }).join('\n')
-            }
+            ${Sources.map((s) => {
+              return `case ${JSON.stringify(
+                s.id
+              )}: return lazy(() => import(${JSON.stringify(s.path)}));`
+            }).join('\n')}
           }
         }
 

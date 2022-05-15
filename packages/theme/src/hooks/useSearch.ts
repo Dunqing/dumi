@@ -25,9 +25,9 @@ const useBuiltinSearch = (keywords: string) => {
       routes
         .filter(({ title, meta }) => {
           const isValidLocaleRoute = meta?.locale === locale
-          const isValidDefaultLocaleRoute
+          const isValidDefaultLocaleRoute =
             // missing locale and there has no locale or global locale equal default locale
-            = !meta?.locale && (!locales.length || locale === locales[0].name)
+            !meta?.locale && (!locales.length || locale === locales[0].name)
 
           return title && (isValidDefaultLocaleRoute || isValidLocaleRoute)
         })
@@ -37,22 +37,23 @@ const useBuiltinSearch = (keywords: string) => {
             path: route.path,
           }
 
-          if (route.meta?.group)
-            routeMetaItem.parent = route.meta.group
+          if (route.meta?.group) routeMetaItem.parent = route.meta.group
 
           result.push(routeMetaItem)
           result.push(
             ...(route.meta?.slugs || [])
-              .filter(({ value }) => value !== (route.meta?.title || route.title))
-              .map(slug => ({
+              .filter(
+                ({ value }) => value !== (route.meta?.title || route.title)
+              )
+              .map((slug) => ({
                 title: slug.value,
                 path: `${route.path}#${slug.heading}`,
                 parent: routeMetaItem,
-              })),
+              }))
           )
 
           return result
-        }, [] as ISearchMetaItem[]),
+        }, [] as ISearchMetaItem[])
     )
   }, [routes.length, locale])
 
@@ -63,13 +64,11 @@ const useBuiltinSearch = (keywords: string) => {
       const result = []
 
       for (let i = 0; i < metas.length; i += 1) {
-        if (metas[i].title.toUpperCase().includes(val))
-          result.push(metas[i])
+        if (metas[i].title.toUpperCase().includes(val)) result.push(metas[i])
       }
 
       setItems(result)
-    }
-    else {
+    } else {
       setItems([])
     }
   }, [keywords, metas.length])
@@ -86,12 +85,12 @@ const useAlgoliaSearch = () => {
   } = useContext(context)
   const binder = useCallback(
     (selector: string) => {
-      (window as any).docsearch({
+      ;(window as any).docsearch({
         inputSelector: selector,
         ...algolia,
       })
     },
-    [algolia],
+    [algolia]
   )
 
   return binder

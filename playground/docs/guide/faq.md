@@ -265,9 +265,8 @@ We can add support for other languages in dumi in the following ways:
 
 ```tsx | pure
 // src/app.ts
-import Prism from 'prism-react-renderer/prism';
-
-(typeof global !== 'undefined' ? global : window).Prism = Prism
+import Prism from 'prism-react-renderer/prism'
+;(typeof global !== 'undefined' ? global : window).Prism = Prism
 
 require('prismjs/components/prism-kotlin')
 require('prismjs/components/prism-csharp')

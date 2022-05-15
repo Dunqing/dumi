@@ -16,7 +16,7 @@ export default (): [(text: string) => void, 'ready' | 'copied'] => {
     setTimer(
       setTimeout(() => {
         setStatus('ready')
-      }, 2000),
+      }, 2000)
     )
   }, [])
 

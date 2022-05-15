@@ -15,17 +15,16 @@ function filterValidChildren(children: any[]) {
 }
 
 const getSlugger = (key: string) => {
-  if (!sluggerCache.has(key))
-    sluggerCache.set(key, new Slugger())
+  if (!sluggerCache.has(key)) sluggerCache.set(key, new Slugger())
   return sluggerCache.get(key)!
 }
 
-export const isHeading = function(element: any): element is Element {
+export const isHeading = function (element: any): element is Element {
   return headingRE.test((element as Element).tagName)
 }
 
-export const slug: Plugin = function() {
-  return function(tree, file) {
+export const slug: Plugin = function () {
+  return function (tree, file) {
     const slugger = getSlugger(file.path)
     slugger.reset()
     visit(tree, { type: 'element' }, (element) => {
@@ -36,10 +35,12 @@ export const slug: Plugin = function() {
         } as any)
 
         // // generate id if not exist
-        element.properties = { id: slugger.slug(title.trim(), false), ...element.properties }
+        element.properties = {
+          id: slugger.slug(title.trim(), false),
+          ...element.properties,
+        }
 
-        if (!file.data.title)
-          file.data.title = title
+        if (!file.data.title) file.data.title = title
 
         file.data.slugs = ((file.data.slugs as any[]) || []).concat({
           depth: parseInt(element.tagName[1], 10),

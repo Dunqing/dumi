@@ -11,5 +11,9 @@ export default function Example3() {
 
     return () => clearInterval(timer)
   }, [])
-  return <div>Example3 {count} <Link to={'/'}>首页</Link></div>
+  return (
+    <div>
+      Example3 {count} <Link to={'/'}>首页</Link>
+    </div>
+  )
 }

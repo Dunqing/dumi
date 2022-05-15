@@ -8,15 +8,18 @@ import SearchBar from './components/SearchBar'
 import Dark from './components/Dark'
 import './styles/layout.less'
 
-const Hero = hero => (
+const Hero = (hero) => (
   <>
     <div className="__dumi-default-layout-hero">
       {hero.image && <img src={hero.image} />}
       <h1>{hero.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: hero.desc }} />
-      {hero.actions
-        && hero.actions.map(action => (
-          <Link to={action.link} key={action.text}>
+      {hero.actions &&
+        hero.actions.map((action) => (
+          <Link
+            to={action.link}
+            key={action.text}
+          >
             <button type="button">{action.text}</button>
           </Link>
         ))}
@@ -24,19 +27,20 @@ const Hero = hero => (
   </>
 )
 
-const Features = features => (
+const Features = (features) => (
   <div className="__dumi-default-layout-features">
-    {features.map(feat => (
-      <dl key={feat.title} style={{ backgroundImage: feat.icon ? `url(${feat.icon})` : undefined }}>
-        {feat.link
-          ? (
-            <Link to={feat.link}>
-              <dt>{feat.title}</dt>
-            </Link>
-            )
-          : (
+    {features.map((feat) => (
+      <dl
+        key={feat.title}
+        style={{ backgroundImage: feat.icon ? `url(${feat.icon})` : undefined }}
+      >
+        {feat.link ? (
+          <Link to={feat.link}>
             <dt>{feat.title}</dt>
-            )}
+          </Link>
+        ) : (
+          <dt>{feat.title}</dt>
+        )}
         <dd dangerouslySetInnerHTML={{ __html: feat.desc }} />
       </dl>
     ))}
@@ -57,18 +61,21 @@ const Layout: React.FC<any> = ({ children }) => {
   const isSiteMode = mode === 'site'
   const showHero = isSiteMode && meta.hero
   const showFeatures = isSiteMode && meta.features
-  const showSideMenu = meta.sidemenu !== false && !showHero && !showFeatures && !meta.gapless
-  const showSlugs
-    = !showHero
-    && !showFeatures
-    && Boolean(meta.slugs?.length)
-    && (meta.toc === 'content' || meta.toc === undefined)
-    && !meta.gapless
+  const showSideMenu =
+    meta.sidemenu !== false && !showHero && !showFeatures && !meta.gapless
+  const showSlugs =
+    !showHero &&
+    !showFeatures &&
+    Boolean(meta.slugs?.length) &&
+    (meta.toc === 'content' || meta.toc === undefined) &&
+    !meta.gapless
   const isCN = /^zh|cn$/i.test(locale)
   const updatedTimeIns = new Date(meta.updatedTime)
-  const updatedTime: any = `${updatedTimeIns.toLocaleDateString([], { hour12: false })} ${updatedTimeIns.toLocaleTimeString([], { hour12: false })}`
-  const repoPlatform
-    = { github: 'GitHub', gitlab: 'GitLab' }[
+  const updatedTime: any = `${updatedTimeIns.toLocaleDateString([], {
+    hour12: false,
+  })} ${updatedTimeIns.toLocaleTimeString([], { hour12: false })}`
+  const repoPlatform =
+    { github: 'GitHub', gitlab: 'GitLab' }[
       (repoUrl || '').match(/(github|gitlab)/)?.[1] || 'nothing'
     ] || platform
 
@@ -82,8 +89,7 @@ const Layout: React.FC<any> = ({ children }) => {
       data-gapless={String(!!meta.gapless)}
       onClick={() => {
         setDarkSwitch(false)
-        if (menuCollapsed)
-          return
+        if (menuCollapsed) return
         setMenuCollapsed(true)
       }}
     >
@@ -94,14 +100,14 @@ const Layout: React.FC<any> = ({ children }) => {
           <Dark
             darkSwitch={darkSwitch}
             onDarkSwitchClick={(ev) => {
-              setDarkSwitch(val => !val)
+              setDarkSwitch((val) => !val)
               ev.stopPropagation()
             }}
             isSideMenu={false}
           />
         }
         onMobileMenuClick={(ev) => {
-          setMenuCollapsed(val => !val)
+          setMenuCollapsed((val) => !val)
           ev.stopPropagation()
         }}
       />
@@ -115,7 +121,12 @@ const Layout: React.FC<any> = ({ children }) => {
         mobileMenuCollapsed={menuCollapsed}
         location={location}
       />
-      {showSlugs && <SlugList slugs={meta.slugs} className="__dumi-default-layout-toc" />}
+      {showSlugs && (
+        <SlugList
+          slugs={meta.slugs}
+          className="__dumi-default-layout-toc"
+        />
+      )}
       {showHero && Hero(meta.hero)}
       {showFeatures && Features(meta.features)}
       <div className="__dumi-dexault-layout-content">
@@ -124,10 +135,14 @@ const Layout: React.FC<any> = ({ children }) => {
           <div className="__dumi-default-layout-footer-meta">
             {repoPlatform && (
               <Link to={`${repoUrl}/edit/${branch}/${meta.filePath}`}>
-                {isCN ? `在 ${repoPlatform} 上编辑此页` : `Edit this doc on ${repoPlatform}`}
+                {isCN
+                  ? `在 ${repoPlatform} 上编辑此页`
+                  : `Edit this doc on ${repoPlatform}`}
               </Link>
             )}
-            <span data-updated-text={isCN ? '最后更新时间：' : 'Last update: '}>{updatedTime}</span>
+            <span data-updated-text={isCN ? '最后更新时间：' : 'Last update: '}>
+              {updatedTime}
+            </span>
           </div>
         )}
         {(showHero || showFeatures) && meta.footer && (

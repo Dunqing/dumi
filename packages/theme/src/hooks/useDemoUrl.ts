@@ -46,7 +46,12 @@ export default (demoId: string) => {
 
   useEffect(() => {
     setUrl(
-      demoId ? getDemoUrl(demoId, config.exportStatic && config.exportStatic.htmlSuffix) : null,
+      demoId
+        ? getDemoUrl(
+            demoId,
+            config.exportStatic && config.exportStatic.htmlSuffix
+          )
+        : null
     )
   }, [demoId, config])
 

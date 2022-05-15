@@ -19,9 +19,7 @@ interface IDumiOpts {
   theme: any
 }
 
-interface IRoute {
-
-}
+interface IRoute {}
 
 export interface IThemeContext {
   /**
