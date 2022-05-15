@@ -1,39 +1,20 @@
-# vite-plugin-dumi
+# dumi
 
-[![NPM version](https://img.shields.io/npm/v/vite-plugin-dumi.svg)](https://npmjs.org/package/vite-plugin-dumi)
+基于vite实现[dumi](https://github.com/umijs/dumi)，参数和官方版本保持一致
 
-## Install
+### 为什么要再实现一个dumi
 
-```bash
-pnpm add vite-plugin-dumi -D
-```
+为了更快的开发体验
 
-## Usage
+## 功能
 
-```typescript
-import { defineConfig } from 'vite'
-import plugin from 'vite-plugin-dumi'
+- [x] 实现dumi核心功能(文档渲染)
+- [ ] 增量编译
+- [ ] api补全
+- [ ] 主题重写
+- [ ] 文档更新
+- [ ] 测试用例
 
-export default defineConfig({
-  plugins: [plugin()],
-})
-```
+## 参与开发
 
-
-### Options
-
-#### `include`
-
-Type: `string` | `Array<string>`<br>
-Default: `[]`
-
-Files to include in this plugin (default all).
-
-#### `exclude`
-
-Type: `string` | `Array<string>`<br>
-Default: `[]`
-
-Files to exclude in this plugin (default none).
-
-[LICENSE (MIT)](/LICENSE)
+欢迎参与开发
