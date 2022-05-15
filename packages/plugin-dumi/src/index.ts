@@ -10,15 +10,20 @@ interface PluginOptions {
   exclude?: FilterPattern
 }
 
-const MARKDOWN_ENTRY = 'MARKDOWN_ENTRY'
+const MARKDOWN_ENTRY = '/MARKDOWN_ENTRY.tsx'
 
 export default function plugin({
   include = [],
   exclude = [],
 }: PluginOptions = {}): Plugin {
-  const filter = createFilter(include, exclude)
+  createFilter(include, exclude)
 
-  const entryPath = path.resolve(__dirname, '..', 'src', './client/index.tsx')
+  const entryPath = path.resolve(
+    path.dirname(import.meta.url.replace('file:///', '')),
+    '..',
+    'src',
+    './client/index.tsx'
+  )
 
   let config: ResolvedConfig
   return {
@@ -30,8 +35,8 @@ export default function plugin({
     resolveId(id: string) {
       if (id === 'virtual:dumi-provider') return id
 
-      if (id) {
-        if (!filter(id)) return undefined
+      if (id === MARKDOWN_ENTRY) {
+        return id
       }
     },
     async load(id) {
@@ -59,27 +64,25 @@ export default function plugin({
         )
       }
     },
-    transformIndexHtml(html) {
-      return {
-        html,
-        tags: [
-          {
-            tag: 'script',
-            injectTo: 'body-prepend',
-            attrs: {
-              type: 'module',
-              src: MARKDOWN_ENTRY,
-            },
+    transformIndexHtml: {
+      enforce: 'pre',
+      transform: () => [
+        {
+          tag: 'script',
+          injectTo: 'body-prepend',
+          attrs: {
+            type: 'module',
+            src: MARKDOWN_ENTRY,
           },
-          {
-            tag: 'div',
-            injectTo: 'body',
-            attrs: {
-              id: 'docs',
-            },
+        },
+        {
+          tag: 'div',
+          injectTo: 'body',
+          attrs: {
+            id: 'docs',
           },
-        ],
-      }
+        },
+      ],
     },
   }
 }
