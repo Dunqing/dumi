@@ -20,7 +20,7 @@ export default function plugin({
   createFilter(include, exclude)
 
   const entryPath = path.posix.join(
-    fileURLToPath(import.meta.url),
+    path.dirname(fileURLToPath(import.meta.url)),
     '../src',
     './client/index.tsx'
   )
