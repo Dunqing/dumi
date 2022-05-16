@@ -4,6 +4,7 @@ import type { FilterPattern } from '@rollup/pluginutils'
 import { createFilter } from '@rollup/pluginutils'
 import { transformSync } from 'esbuild'
 import { dumiProvider, transform } from './node'
+import { fileURLToPath } from 'url'
 
 interface PluginOptions {
   include?: FilterPattern
@@ -18,9 +19,8 @@ export default function plugin({
 }: PluginOptions = {}): Plugin {
   createFilter(include, exclude)
 
-  const { pathname } = new URL(import.meta.url)
   const entryPath = path.posix.join(
-    path.dirname(pathname),
+    fileURLToPath(import.meta.url),
     '../src',
     './client/index.tsx'
   )
